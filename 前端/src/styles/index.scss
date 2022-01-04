@@ -64,10 +64,6 @@ div:focus {
   padding: 20px;
 }
 
-el-input.short {
-  max-width: 220px;
-}
-
-el-input:short {
+.short {
   max-width: 220px;
 }

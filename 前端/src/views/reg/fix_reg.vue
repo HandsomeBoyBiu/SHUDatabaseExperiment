@@ -25,7 +25,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="结算方式">
-        <el-radio-group v-model="form.type">
+        <el-radio-group v-model="form.pay">
           <el-radio-button label="现付" />
           <el-radio-button label="月结" />
         </el-radio-group>
@@ -34,20 +34,25 @@
         <el-date-picker v-model="form.in_time" type="date" />
       </el-form-item>
       <el-form-item label="业务员">
-        <el-input:short v-model="form.clerk_name" />
+        <el-input v-model="form.clerk_name" class="short" />
       </el-form-item>
       <el-form-item label="业务员编号">
-        <el-input v-model="form.clerk_id" class="short"/>
+        <el-input v-model="form.clerk_id" class="short" />
       </el-form-item>
       <el-form-item label="预计完工时间">
         <el-date-picker v-model="form.est_time" />
+      </el-form-item>
+      <el-form-item label="故障描述">
+        <el-input v-model="form.describe" type="textarea" :rows="5" />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="bind_submit"> 提交 </el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
-import '@/styles/index.scss'
 import api from "@/utils/api";
 export default {
   data() {
@@ -62,6 +67,7 @@ export default {
         clerk_name: "",
         clerk_id: "",
         est_time: "",
+        describe: "",
       },
       car_list: [],
       client_list: [],
@@ -71,6 +77,12 @@ export default {
     console.log(123);
     this.car_list = api.get_car_list();
     this.client_list = [{ id: "123" }];
+    console.log(JSON.stringify(this.car_list));
+  },
+  methods: {
+    bind_submit() {
+      console.log(JSON.stringify(this.form));
+    },
   },
 };
 </script>

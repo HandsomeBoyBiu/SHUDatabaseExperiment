@@ -1,99 +1,119 @@
-# vue-admin-template
+# 这是一个标题
+运行前端：`npm run dev`
 
-English | [简体中文](./README-zh.md)
+这三个页面是自己写的，其他页面是模板的demo
 
-> A minimal vue admin template with Element UI & axios & iconfont & permission control & lint
+![image-20220104212336269](README.assets/image-20220104212336269-16413026257331.png)
 
-**Live demo:** http://panjiachen.github.io/vue-admin-template
+# 页面
 
+## 客户登记
 
-**The current version is `v4.0+` build on `vue-cli`. If you want to use the old version , you can switch branch to [tag/3.11.0](https://github.com/PanJiaChen/vue-admin-template/tree/tag/3.11.0), it does not rely on `vue-cli`**
+代码写在`src/views/reg/client_reg.vue`
 
-<p align="center">
-  <b>SPONSORED BY</b>
-</p>
-<p align="center">
-   <a href="https://finclip.com?from=vue_element" title="FinClip" target="_blank">
-      <img height="200px" src="https://gitee.com/panjiachen/gitee-cdn/raw/master/vue%E8%B5%9E%E5%8A%A9.png" title="FinClip">
-   </a>
-</p>
+![image-20220104212446039](README.assets/image-20220104212446039-16413026873532.png)
 
-## Build Setup
+需要后端提供接口：
 
-```bash
-# clone the project
-git clone https://github.com/PanJiaChen/vue-admin-template.git
+- 获得数据库中已有的车辆信息
+  `GET`请求，无参数
+  期望的返回格式：
 
-# enter the project directory
-cd vue-admin-template
+  ```json
+  data:
+  [
+      { id: "沪A12345", color: "白色", series: "桑塔纳", type: "轿车" },
+      { id: "沪A23456", color: "蓝色", series: "途安", type: "SUV" },
+  ]
+  ```
 
-# install dependency
-npm install
+- 新增车辆信息
+  `POST`请求，参数如下
 
-# develop
-npm run dev
-```
+  ```json
+  data:{
+      "car_id":"沪A12345",
+      "car_color":"白色",
+      "car_series":"桑塔纳",
+      "car_type":"轿车"
+  }
+  ```
 
-This will automatically open http://localhost:9528
+  期望返回：成功`HTTP 200`， 失败`失败信息`
 
-## Build
+- 新增客户信息
+  `POST`请求，参数如下
 
-```bash
-# build for test environment
-npm run build:stage
+  ```json
+  data:{
+      "client_id":"",
+      "client_name":"李治平",
+      "client_type":"个人",
+      "discount":100,
+      "contact":"李治平",
+      "tel":"13661729587",
+      "car_id":"沪A23456"
+  }
+  ```
 
-# build for production environment
-npm run build:prod
-```
+  期望返回：成功`HTTP 200`， 失败`失败信息`
 
-## Advanced
+  ## 维修委托登记
 
-```bash
-# preview the release environment effect
-npm run preview
+  代码写在`src/views/reg/fix_reg.vue`
 
-# preview the release environment effect + static resource analysis
-npm run preview -- --report
+  ![image-20220104213523347](README.assets/image-20220104213523347-16413033251163.png)
 
-# code format check
-npm run lint
+需要后端提供接口：
 
-# code format check and auto fix
-npm run lint -- --fix
-```
+- 新增委托登记
+  `POST`请求，参数如下：
 
-Refer to [Documentation](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) for more information
+  ```json
+  data:{
+      "car_id":"沪A12345",
+      "client_id":"123",
+      "priority":"普通",
+      "type":"中修",
+      "pay":"现付",
+      "in_time":"2022-01-03T16:00:00.000Z",
+      "clerk_name":"王波",
+      "clerk_id":"01",
+      "est_time":"2022-01-24T16:00:00.000Z",
+      "describe":"车头损坏"
+  }
+  ```
 
-## Demo
+  期望返回：成功`HTTP 200`， 失败`失败信息`
 
-![demo](https://github.com/PanJiaChen/PanJiaChen.github.io/blob/master/images/demo.gif)
+## 维修派工单
 
-## Extra
+代码写在`src/views/reg/job_reg.vue`
 
-If you want router permission && generate menu by user roles , you can use this branch [permission-control](https://github.com/PanJiaChen/vue-admin-template/tree/permission-control)
+![image-20220104214234650](README.assets/image-20220104214234650.png)
 
-For `typescript` version, you can use [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (Credits: [@Armour](https://github.com/Armour))
+需要后端提供接口：
 
-## Related Project
+- 新增派工单
+  `POST`请求，参数如下：
 
-- [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
+  ```json
+  data:[
+      {
+          "fix_id":"012",
+           "fix_name":"维修车头",
+           "time":"5",
+           "worker_id":"012",
+           "worker_name":"机修"
+      },
+      {
+          "fix_id":"017",
+          "fix_name":"更换车灯",
+          "time":"1",
+          "worker_id":"012",
+          "worker_name":"机修"
+      }
+  ]
+  ```
 
-- [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
-
-- [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template)
-
-- [awesome-project](https://github.com/PanJiaChen/vue-element-admin/issues/2312)
-
-## Browsers support
-
-Modern browsers and Internet Explorer 10+.
-
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
-| --------- | --------- | --------- | --------- |
-| IE10, IE11, Edge| last 2 versions| last 2 versions| last 2 versions
-
-## License
-
-[MIT](https://github.com/PanJiaChen/vue-admin-template/blob/master/LICENSE) license.
-
-Copyright (c) 2017-present PanJiaChen
+  期望返回：成功`HTTP 200`， 失败`失败信息`
