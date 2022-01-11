@@ -58,27 +58,54 @@ export const constantRoutes = [
   {
     path: '/reg',
     component: Layout,
-    meta:{ title:'表单', icon: 'form'},
+    meta: { title: '登记', icon: 'form' },
     children: [
+      {
+        path: 'car_reg',
+        name: '车辆登记',
+        component: () => import("@/views/reg/car_reg"),
+        meta: { title: '车辆登记', icon: 'el-icon-truck' }
+      },
       {
         path: 'client_reg',
         name: '客户登记',
         component: () => import("@/views/reg/client_reg"),
-        meta: { title: '客户登记', icon: 'el-icon-s-custom'}
+        meta: { title: '客户登记', icon: 'el-icon-s-custom' }
       },
       {
         path: 'fix_reg',
         name: '维修委托登记',
         component: () => import('@/views/reg/fix_reg'),
-        meta: {title:'维修委托登记', icon: 'el-icon-s-claim'}
+        meta: { title: '维修委托登记', icon: 'el-icon-s-claim' }
       },
       {
         path: 'job_reg',
         name: ' 维修派工单',
         component: () => import('@/views/reg/job_reg'),
-        meta: {title:' 维修派工单', icon: 'el-icon-s-tools'}
+        meta: { title: ' 维修派工单', icon: 'el-icon-s-tools' }
       }
     ]
+  },
+
+  {
+    path: '/manage',
+    component: Layout,
+    meta: { title: '管理', icon: 'el-icon-set-up' },
+    children: [
+      {
+        path: 'car',
+        name: '车辆管理',
+        component: () => import('@/views/manage/car_mng'),
+        meta: { title: '车辆管理', icon: 'el-icon-truck' }
+      },
+      {
+        path: 'client',
+        name: '客户管理',
+        component: () => import('@/views/manage/client_mng'),
+        meta: { title: '客户管理', icon: 'el-icon-s-custom' }
+      },
+    ]
+
   },
 
   {

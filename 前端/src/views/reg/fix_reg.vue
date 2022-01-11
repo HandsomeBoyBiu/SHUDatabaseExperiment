@@ -3,7 +3,7 @@
     <el-form ref="form" :model="form" label-width="100px" style="max-width: 1200px">
       <el-form-item label="车牌号">
         <el-select v-model="form.car_id" filterable>
-          <el-option v-for="item in car_list" :key="item.id" :value="item.id" :label="item.id" />
+          <el-option v-for="item in car_list" :key="item.car_id" :value="item.car_id" :label="item.car_id" />
         </el-select>
       </el-form-item>
       <el-form-item label="客户号">
