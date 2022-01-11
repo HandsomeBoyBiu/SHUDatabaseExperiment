@@ -7,3 +7,9 @@ from django.template import loader
 def index(request):
     template = loader.get_template('../polls/templates/polls/index.html')
     return HttpResponse(template.render(request))
+
+
+def car(request):
+    print('cars')
+    print(request.body)
+    return HttpResponse('car')
