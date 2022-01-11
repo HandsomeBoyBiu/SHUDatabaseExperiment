@@ -155,7 +155,15 @@ export default {
       this.active_tab = "car";
     },
     bind_submit_car() {
-      Axios.post('/car/', this.car_form);
+      // Axios.post('/car/', this.car_form);
+      Axios(
+        {
+          url:'/car/',
+          method: 'post',
+          crossdomain: true,
+          data :this.car_form
+        }
+      ).then(res=>{console.log(res.data)});
       console.log(JSON.stringify(this.car_form));
       this.car_list = api.get_car_list();
       this.client_form.car_id = this.car_form.car_id;
