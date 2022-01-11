@@ -155,7 +155,7 @@ export default {
       this.active_tab = "car";
     },
     bind_submit_car() {
-      Axios.post('/car', this.car_form);
+      Axios.post('http://127.0.0.1:8000/polls/car/', this.car_form);
       console.log(JSON.stringify(this.car_form));
       this.car_list = api.get_car_list();
       this.client_form.car_id = this.car_form.car_id;
