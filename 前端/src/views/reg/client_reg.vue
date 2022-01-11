@@ -155,6 +155,7 @@ export default {
       this.active_tab = "car";
     },
     bind_submit_car() {
+      Axios.post('/car', this.car_form);
       console.log(JSON.stringify(this.car_form));
       this.car_list = api.get_car_list();
       this.client_form.car_id = this.car_form.car_id;
@@ -165,6 +166,7 @@ export default {
       this.active_tab = "client";
     },
     bind_submit_client() {
+      Axios.post('/client', this.client_form);
       // Axios.post('localhost:9999', this.client_form)
       console.log(JSON.stringify(this.client_form));
       this.$message({

@@ -28,7 +28,7 @@
   ```
 
 - 新增车辆信息
-  `POST`请求，参数如下
+  `POST`请求，地址`{baseURL}/car`，参数如下
 
   ```json
   data:{
@@ -42,7 +42,7 @@
   期望返回：成功`HTTP 200`， 失败`失败信息`
 
 - 新增客户信息
-  `POST`请求，参数如下
+  `POST`请求，地址`{baseURL}/client`,参数如下
 
   ```json
   data:{
