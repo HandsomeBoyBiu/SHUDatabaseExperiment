@@ -21,8 +21,8 @@ let api = {
       },
       {
         client_id: '2',
-        client_name: '王义炜',
-        client_type: '个人',
+        client_name: '王义炜无敌有限公司',
+        client_type: '公司',
         discount: '88',
         contact: '王义炜',
         tel: '180123241',
@@ -31,6 +31,34 @@ let api = {
           { car_id: "沪C23456", color: "蓝色", series: "途安", type: "SUV" },
         ]
       }
+    ]
+  },
+  get_fix_list() {
+    return [
+      {
+        "car_id": "沪A12345",
+        "client_id": "123",
+        "priority": "普通",
+        "type": "中修",
+        "pay": "现付",
+        "in_time": "2022-01-10T16:00:00.000Z",
+        "clerk_name": "王波",
+        "clerk_id": "01",
+        "est_time": "2022-01-16T16:00:00.000Z",
+        "describe": "BOOM！"
+      },
+      {
+        "car_id": "沪A56789",
+        "client_id": "321",
+        "priority": "加急",
+        "type": "大修",
+        "pay": "现付",
+        "in_time": "2022-01-10T16:00:00.000Z",
+        "clerk_name": "王波",
+        "clerk_id": "01",
+        "est_time": "2022-01-16T16:00:00.000Z",
+        "describe": "BOOM！"
+      },
     ]
   }
 
