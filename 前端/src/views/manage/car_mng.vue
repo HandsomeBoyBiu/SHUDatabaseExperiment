@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <h3>车辆列表</h3>
-    <el-table :data="table_data" border="true">
+    <el-table :data="table_data" border=true>
       <el-table-column label="车牌号" prop="car_id" sortable />
       <el-table-column label="颜色" prop="color" sortable />
       <el-table-column label="车型" prop="series" sortable />

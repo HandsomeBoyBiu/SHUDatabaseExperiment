@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <h3>客户列表</h3>
-    <el-table :data="table_data" border="true">
+    <el-table :data="table_data" border=true>
       <el-table-column label="客户编号" prop="client_id" width="110" sortable />
       <el-table-column label="客户名称" prop="client_name" sortable />
       <el-table-column

@@ -36,30 +36,50 @@ let api = {
   get_fix_list() {
     return [
       {
+        "fix_id": "12345",
         "car_id": "沪A12345",
         "client_id": "123",
         "priority": "普通",
         "type": "中修",
         "pay": "现付",
-        "in_time": "2022-01-10T16:00:00.000Z",
+        "in_time": "2022-01-10",
         "clerk_name": "王波",
         "clerk_id": "01",
-        "est_time": "2022-01-16T16:00:00.000Z",
+        "est_time": "2022-01-16",
         "describe": "BOOM！"
       },
       {
+        "fix_id": "56789",
         "car_id": "沪A56789",
         "client_id": "321",
         "priority": "加急",
         "type": "大修",
         "pay": "现付",
-        "in_time": "2022-01-10T16:00:00.000Z",
+        "in_time": "2022-01-12",
         "clerk_name": "王波",
         "clerk_id": "01",
-        "est_time": "2022-01-16T16:00:00.000Z",
+        "est_time": "2022-01-16",
         "describe": "BOOM！"
       },
     ]
+  },
+  get_job_list(fix_id){
+    return [
+      {
+          "job_id":"012",
+           "fix_name":"维修车头",
+           "time":"5",
+           "worker_id":"012",
+           "worker_name":"机修"
+      },
+      {
+          "job_id":"017",
+          "fix_name":"更换车灯",
+          "time":"1",
+          "worker_id":"012",
+          "worker_name":"机修"
+      }
+  ]
   }
 
 };
