@@ -41,6 +41,7 @@ class FixTables(models.Model):
     clerk_name = models.CharField(max_length=8)         # 业务员姓名
     clerk_id = models.IntegerField()                    # 业务员id
     est_time = models.DateTimeField()                   # 预计完工时间
+    describe = models.CharField(max_length=255)         # 故障描述
 
 
 # 维修工表
