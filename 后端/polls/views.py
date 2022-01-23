@@ -1,6 +1,9 @@
+from dataclasses import dataclass
+from black import re
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
+from itsdangerous import serializer
 from polls.models import *
 import json
 # from .forms import NameForm
@@ -72,6 +75,14 @@ def reg_fix_table(request):
     #     # sql语句
     #     return HttpResponse.http.OK
 
+# 获取工单
+def get_tickets(request):
+    print('### [Request GET] get_tickets ###')
+    data={}
+    fix_id = request.GET.get("fix_id")
+    res = FixTables.objects.filter(fix_id=fix_id)
+    data['data']=list(res)
+    return data
 
 def client(request):
     return HttpResponse.http.OK
