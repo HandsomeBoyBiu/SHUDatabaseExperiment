@@ -4,7 +4,7 @@ from django.db import models
 
 
 class Clients(models.Model):
-    client_id = models.IntegerField(primary_key=True)   # 客户id
+    client_id = models.AutoField(primary_key=True)   # 客户id
     client_name = models.CharField(max_length=16)       # 客户名称
     client_type = models.CharField(                     # 客户类型
         max_length=255,
@@ -25,8 +25,8 @@ class Cars(models.Model):
 
 
 class FixTables(models.Model):  
-    fix_id = models.IntegerField(primary_key=True)      # 维修表id
-    register_time = models.DateField()                  # 注册时间
+    fix_id = models.AutoField(primary_key=True)         # 维修表id
+    register_time = models.DateField(auto_now_add=True)              # 注册时间
     car_id = models.CharField(max_length=16)                         # 车牌号
     priority = models.CharField(                        # 维修类型（普通）
         max_length=255,
@@ -41,12 +41,12 @@ class FixTables(models.Model):
     clerk_name = models.CharField(max_length=8)         # 业务员姓名
     clerk_id = models.IntegerField()                    # 业务员id
     est_time = models.DateTimeField()                   # 预计完工时间
-    describe = models.CharField(max_length=255)         # 故障描述
+    describe = models.CharField(max_length=255, null=True)         # 故障描述
 
 
 # 维修工表
 class FixMan(models.Model):
-    fix_man_id = models.IntegerField()                  # 维修员id
+    fix_man_id = models.AutoField(primary_key=True)                  # 维修员id
     work_type = models.CharField(                       # 工种
         max_length=255
     )
@@ -55,7 +55,7 @@ class FixMan(models.Model):
 
 # 项目表
 class ProjectTable(models.Model):
-    project_table_id = models.IntegerField()            # 项目表id
+    project_table_id = models.AutoField(primary_key=True)            # 项目表id
     project_type = models.CharField(                    # 项目类型
         max_length=255
     )
@@ -64,7 +64,7 @@ class ProjectTable(models.Model):
 # 连接表
 class JoinTables(models.Model):
     # 前三个参数用于连接前三张表
-    fix_id = models.IntegerField()                      # 维修表id
-    fix_man_id = models.IntegerField()                  # 维修员id
-    project_table_id = models.IntegerField()            # 项目表id
-    work_time = models.IntegerField()                      # 工作时长
+    fix_id = models.IntegerField(null=True)                      # 维修表id
+    fix_man_id = models.IntegerField(null=True)                  # 维修员id
+    project_table_id = models.IntegerField(null=True)            # 项目表id
+    work_time = models.IntegerField(null=True)                      # 工作时长

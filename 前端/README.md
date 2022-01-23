@@ -60,8 +60,8 @@
 
   ```json
   data:{
-      "car_id":"沪A12345",
-      "client_id":"123",
+      "car_id":"沪A12345",		// <- 2. 因为可以通过车牌号找到客户
+      "client_id":"123",		// <- 1. 这里可以不需要加client_id
       "priority":"普通",
       "type":"中修",
       "pay":"现付",

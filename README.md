@@ -2,6 +2,25 @@
 ## 车辆维修管理系统
 ### 前端：lzp 后端：wyw，wb
 
+### 已知问题
+
+1. 在客户登记中，车牌号为选择框，选择框中的车牌数据哪里来？同样的问题也存在于维修委托登记中，是否需要后端新增选择框的数据接口？
+2. 维修委托登记前端没有数据传过来
+
+### 后端常用命令
+
+对应用polls进行数据库迁移，可以理解为生成sql语句但不执行，其中，生成的“sql语句”存放于该应用目录下的migrations文件夹下。
+
+```shell
+python manage.py makemigrations polls
+```
+
+进行数据库迁移，可以理解为执行前面生成的sql语句
+
+```
+python manage.py migrate
+```
+
 数据表结构（*表示该属性仅在后端出现）（%表示前后端属性名不同，%前为前端的属性名，%后为后端的属性名）
 
 1、客户表
@@ -64,3 +83,9 @@
 ### 2022-1-21晚
 
 * 所有数据表框架写入README.md，实现前后端属性名映射
+
+### 2022-1-23
+
+* 完善部分数据表的数据存储方式
+* 新增reg_client和reg_fix_table接口，后者没有测试过，前者测试通过
+* 转为使用mysql数据库（***注意：./后端/djangoProject/setting.py中需要将密码改成自己mysql的密码，数据库名为vrsms(Vehicle Repair Service Management System)***）
