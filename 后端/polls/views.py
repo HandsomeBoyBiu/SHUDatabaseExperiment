@@ -1,11 +1,11 @@
-from dataclasses import dataclass
-from datetime import date
-from black import re
-from django.shortcuts import render
+# from dataclasses import dataclass
+# from datetime import date
+# from black import re
+# from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
-from itsdangerous import serializer
-from numpy import fix
+# from itsdangerous import serializer
+# from numpy import fix
 from polls.models import *
 import json
 # from .forms import NameForm
@@ -62,6 +62,21 @@ def reg_fix_table(request):
     return response
 
 
+# 由于派工单需要两种请求方式，因此这里写了一个分支
+def repair_order(request):
+    if request.method == 'GET':
+        return get_tickets(request)
+    elif request.method == 'POST':
+        return post_repair_order(request)
+
+
+# 派工单的post请求
+def post_repair_order(request):
+    # 这里需要两步
+    # 1、删除原有数据
+    # 2、新增数据
+    return 0
+
 # def car_post(request):
     # form = NameForm(request.POST)
     # print(form)
@@ -77,13 +92,14 @@ def reg_fix_table(request):
     #     # sql语句
     #     return HttpResponse.http.OK
 
+# 派工单的GET请求
 # 查询工单 GET {baseURL}/job?fix_id={fix_id}
 def get_tickets(request):
     print('### [Request GET] get_tickets ###')
-    data={}
+    data = {}
     fix_id = request.GET.get("fix_id")
     res = FixTables.objects.filter(fix_id=fix_id)
-    data['data']=list(res)
+    data['data'] = list(res)
     return data
 
 # 获取所有车辆信息 获得数据库中已有的车辆信息 GET {baseURL}/cars
