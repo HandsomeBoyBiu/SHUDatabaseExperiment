@@ -1,9 +1,11 @@
 from dataclasses import dataclass
+from datetime import date
 from black import re
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from itsdangerous import serializer
+from numpy import fix
 from polls.models import *
 import json
 # from .forms import NameForm
@@ -75,7 +77,7 @@ def reg_fix_table(request):
     #     # sql语句
     #     return HttpResponse.http.OK
 
-# 获取工单
+# 查询工单 GET {baseURL}/job?fix_id={fix_id}
 def get_tickets(request):
     print('### [Request GET] get_tickets ###')
     data={}
@@ -83,6 +85,31 @@ def get_tickets(request):
     res = FixTables.objects.filter(fix_id=fix_id)
     data['data']=list(res)
     return data
+
+# 获取所有车辆信息 获得数据库中已有的车辆信息 GET {baseURL}/cars
+def get_all_cars(request):
+    print('### [Request GET] get_all_cars ###')
+    data={}
+    cars=Cars.objects.all()
+    data['data']=list(cars)
+    return data
+
+# 获取数据库中客户信息 GET {baseURL}/client ?加入一个cars有问题 暂时不会
+def get_client(request):
+    print('### [Request GET] get_client ###')
+    data={}
+    client = Clients.objects.all()
+    data['data']=list(client)
+    return data
+
+# 获取维修委托单信息 GET {baseURL}/fix
+def get_fix(resquest):
+    print('### [Request GET] get_fix ###')
+    data={}
+    fix_tables = FixTables.objects.all()
+    data['data']=list(fix_tables)
+    return data
+
 
 def client(request):
     return HttpResponse.http.OK
