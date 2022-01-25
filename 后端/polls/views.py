@@ -1,16 +1,13 @@
-# from dataclasses import dataclass
-# from datetime import date
-# from black import re
-# from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
-# from itsdangerous import serializer
-# from numpy import fix
 from .models import *
 import json
 from django.core import serializers
-# from .forms import NameForm
+from django.core import serializers
 from django.http import HttpResponseRedirect
+import pickle
+
+from datetime import date, datetime
 
 
 # Create your views here.
@@ -34,6 +31,14 @@ def reg_car(request):
     response = HttpResponse()
     response.status_code = 200
     return response
+
+
+# client分支结构，分别处理POST和GET
+def branch_client(request):
+    if request.method == 'POST':
+        return reg_client(request)
+    elif request.method == 'GET':
+        return get_client(request)
 
 
 # 测试成功
@@ -102,41 +107,97 @@ def post_repair_order(request):
 
 # 派工单的GET请求
 # 查询工单 GET {baseURL}/job?fix_id={fix_id}
+# job_id,fix_name,time,work_id,worker_name
+# 测试通过
 def get_tickets(request):
     print('### [Request GET] get_tickets ###')
-    data = {}
+    jsonlist = []
     fix_id = request.GET.get("fix_id")
-    res = FixTables.objects.filter(fix_id=fix_id)
-    data['data'] = list(res)
-    return HttpResponse(json.dumps(data))
+    res = JoinTables.objects.filter(fix_id=fix_id)
+    # print(res)
+    tickets = list(res)
+    for ticket in tickets:
+        ls = {'job_id': ticket.project_table_id,
+              'fix_name': list(ProjectTable.objects.filter(project_table_id=ticket.project_table_id))[0].project_type,
+              'time': ticket.work_time, 'work_id': ticket.fix_man_id,
+              'worker_name': list(FixMan.objects.filter(fix_man_id=ticket.fix_man_id))[0].work_type}
+        jsonlist.append(ls)
+    return HttpResponse(json.dumps(jsonlist, ensure_ascii=False))
 
 
 # 获取所有车辆信息 获得数据库中已有的车辆信息 GET {baseURL}/cars
-# 测试成功了大概也许8
+# 测试成功
 def get_all_cars(request):
     print('### [Request GET] get_all_cars ###')
-    cars = Cars.objects.filter(car_id='asd')
-    data = serializers.serialize("json", cars)
-    print(data)
-    return HttpResponse(data)
+    qs = Cars.objects.values_list("car_id", "car_color", "car_series", "car_type", named=True)
+    cars = Cars.objects.all()
+    cars.query = pickle.loads(pickle.dumps(qs.query))
+    ls = list(cars)
+    for car in ls:
+        car['id'] = car.pop('car_id')
+        car['color'] = car.pop('car_color')
+        car['series'] = car.pop('car_series')
+        car['type'] = car.pop('car_type')
+    # print(type(qs))
+    return HttpResponse(json.dumps(ls, ensure_ascii=False))
 
 
 # 获取数据库中客户信息 GET {baseURL}/client ?加入一个cars有问题 暂时不会
 def get_client(request):
     print('### [Request GET] get_client ###')
-    data = {}
-    client = Clients.objects.all()
-    data['data'] = list(client)
-    return HttpResponse(json.dumps(data))
+    qs = Clients.objects.values_list("client_id", "client_name", "client_type", "discount", "contact", "tel",
+                                     named=True)
+    qs1 = Cars.objects.values_list('car_id', "car_color", "car_series", "car_type")
+    clients = Clients.objects.all()
+    clients.query = pickle.loads(pickle.dumps(qs.query))
+    ls = list(clients)
+    print(ls)
+    custom = clients[0]
+    for custom in clients:
+        custom['cars'] = car_exchange(qs1, custom['client_id'])
+    # cars = Cars.objects.filter(belonging=1)
+    # cars.query = pickle.loads((pickle.dumps(qs1.query)))
+    # print(list(cars))
+    # data = serializers.serialize("json", client)
+    # print(clients)
+    return HttpResponse(json.dumps(ls, ensure_ascii=False))
+
+
+def car_exchange(qs1, num):
+    cars = Cars.objects.filter(belonging=num)
+    cars.query = pickle.loads(pickle.dumps(qs1.query))
+    ls = list(cars)
+    for car in ls:
+        car['id'] = car.pop('car_id')
+        car['color'] = car.pop('car_color')
+        car['series'] = car.pop('car_series')
+        car['type'] = car.pop('car_type')
+    return ls
 
 
 # 获取维修委托单信息 GET {baseURL}/fix
-def get_fix(resquest):
+# 测试成功
+def get_fix(request):
     print('### [Request GET] get_fix ###')
-    data = {}
+    qs = FixTables.objects.values_list("fix_id", "car_id", "priority", "fix_type", "pay", "in_time",
+                                       "clerk_name", "clerk_id", "est_time", "describe", named=True)
     fix_tables = FixTables.objects.all()
-    data['data'] = list(fix_tables)
-    return HttpResponse(json.dumps(data))
+    fix_tables.query = pickle.loads(pickle.dumps(qs.query))
+    ls = list(fix_tables)
+    for fix_table in ls:
+        fix_table['client_id'] = list(Cars.objects.filter(car_id=fix_table['car_id']))[0].belonging
+    print(ls)
+    return HttpResponse(json.dumps(ls, ensure_ascii=False, cls=ComplexEncoder))
+
+
+class ComplexEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.strftime('%Y-%m-%d %H:%M:%S')
+        elif isinstance(obj, date):
+            return obj.strftime('%Y-%m-%d')
+        else:
+            return json.JSONEncoder.default(self, obj)
 
 
 def client(request):
