@@ -75,6 +75,13 @@ def reg_fix_table(request):
     return response
 
 
+def branch_fix(request):
+    if request.method == 'POST':
+        return reg_fix_table(request)
+    elif request.method == 'GET':
+        return get_fix(request)
+
+
 # 由于派工单需要两种请求方式，因此这里写了一个分支
 def repair_order(request):
     print("### [Branch] repair_order ###")
