@@ -34,7 +34,6 @@ export default {
     Axios({
       url: "/cars",
       method: "get",
-      crossdomain: true,
     }).then((res) => {
       this.table_data = res.data;
     });

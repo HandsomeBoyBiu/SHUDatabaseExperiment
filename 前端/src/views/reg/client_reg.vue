@@ -62,7 +62,6 @@ export default {
     Axios({
       url: "/cars",
       method: "get",
-      crossdomain: true,
     }).then((res) => {
       this.car_list = res.data;
     });
@@ -106,7 +105,6 @@ export default {
       Axios({
         url: "/client",
         method: "post",
-        crossdomain: true,
         data: this.client_form,
       }).then((res) => {
         console.log(res.data);

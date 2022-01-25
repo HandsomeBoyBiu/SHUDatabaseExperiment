@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <h3>派工单</h3>
-    <p>单号：{{this.fix_id}}</p>
+    <p>单号：{{ this.fix_id }}</p>
     <el-table :data="table_data">
       <el-table-column label="维修项目编号" prop="job_id" />
       <el-table-column label="维修项目" prop="job_name" />
@@ -48,10 +48,11 @@
 
 <script>
 import api from "@/utils/api";
+import Axios from "axios";
 export default {
   data() {
     return {
-      fix_id:"",
+      fix_id: "",
       form: {
         job_id: "",
         job_name: "",
@@ -63,16 +64,30 @@ export default {
     };
   },
   mounted() {
-    this.fix_id = this.$route.query.fix_id
-    this.table_data = api.get_job_list(this.fix_id)
+    this.fix_id = this.$route.query.fix_id;
+    // this.table_data = api.get_job_list(this.fix_id)
+    Axios({
+      url: "/job?fix_id=" + this.fix_id,
+      method: "get",
+    }).then((res) => {
+      console.log(JSON.stringify(res.data));
+      this.table_data = res.data;
+    });
   },
   methods: {
     bind_add() {
       this.table_data.push(this.form);
       this.form = { job_id: "", job_name: "", time: "", worker_id: "", worker_name: "" };
     },
-    bind_submit(){
-      console.log(JSON.stringify(this.table_data))
+    bind_submit() {
+      console.log(JSON.stringify(this.table_data));
+      Axios({
+        url: "/job?fix_id=" + this.fix_id,
+        method: "post",
+        data: this.table_data
+      }).then((res) => {
+        console.log(res);
+      });
     },
     deleteRow(index) {
       console.log(index);

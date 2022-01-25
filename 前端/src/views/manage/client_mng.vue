@@ -64,7 +64,6 @@ export default {
     Axios({
       url: "/client",
       method: "get",
-      crossdomain: true,
     }).then((res) => {
       this.table_data = res.data;
       console.log(JSON.stringify(this.table_data));

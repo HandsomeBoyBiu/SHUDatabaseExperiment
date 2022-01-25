@@ -3,12 +3,7 @@
     <el-form ref="form" :model="form" label-width="100px" style="max-width: 1200px">
       <el-form-item label="车牌号">
         <el-select v-model="form.car_id" filterable>
-          <el-option v-for="item in car_list" :key="item.car_id" :value="item.car_id" :label="item.car_id" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="客户号">
-        <el-select v-model="form.client_id" filterable>
-          <el-option v-for="item in client_list" :key="item.id" :value="item.id" :label="item.id" />
+          <el-option v-for="item in car_list" :key="item.id" :value="item.id" :label="item.id" />
         </el-select>
       </el-form-item>
       <el-form-item label="维修类型">
@@ -53,13 +48,12 @@
 </template>
 
 <script>
-import api from "@/utils/api";
+import Axios from 'axios'
 export default {
   data() {
     return {
       form: {
         car_id: "",
-        client_id: "",
         priority: "普通",
         type: "",
         pay: "",
@@ -70,18 +64,26 @@ export default {
         describe: "",
       },
       car_list: [],
-      client_list: [],
     };
   },
   mounted() {
-    console.log(123);
-    this.car_list = api.get_car_list();
-    this.client_list = [{ id: "123" }];
-    console.log(JSON.stringify(this.car_list));
+    Axios({
+      url: "/cars",
+      method: "get",
+    }).then((res) => {
+      this.car_list = res.data;
+    });
+    console.log(this.car_list)
   },
   methods: {
     bind_submit() {
-      console.log(JSON.stringify(this.form));
+      Axios({
+        url: "/fix",
+        method: "post",
+        data: this.form,
+      }).then((res) => {
+        console.log(res);
+      });
     },
   },
 };

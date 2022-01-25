@@ -1,14 +1,12 @@
 import Axios from "axios";
 
 let api = {
-  get_car_list() {
-    return Axios({
-        url: "/cars",
-        method: "get",
-        crossdomain: true,
-      }).then((res) => {
-        ret(res.data);
-      });
+  async get_car_list() {
+    const res = await Axios({
+      url: "/cars",
+      method: "get",
+    });
+    return res.data
       // return [
     //   { car_id: "沪A12345", color: "白色", series: "桑塔纳", type: "轿车" },
     //   { car_id: "沪A23456", color: "蓝色", series: "途安", type: "SUV" },

@@ -88,3 +88,7 @@ python manage.py migrate
 * 完善部分数据表的数据存储方式
 * 新增reg_client和reg_fix_table接口，后者没有测试过，前者测试通过
 * 转为使用mysql数据库（***注意：./后端/djangoProject/setting.py中需要将密码改成自己mysql的密码，数据库名为vrsms(Vehicle Repair Service Management System)***）
+
+### 2022-1-25
+
+- 前端接入后端接口，联合调试

@@ -20,7 +20,7 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="作业分类" prop="type" sortable />
+      <el-table-column label="作业分类" prop="fix_type" sortable />
       <el-table-column label="结算方式" prop="pay" sortable />
       <el-table-column label="进厂时间" prop="in_time" sortable />
       <el-table-column label="业务员" prop="clerk_name" sortable />
@@ -43,6 +43,7 @@
 
 <script>
 import api from "@/utils/api";
+import Axios from 'axios'
 export default {
   data() {
     return {
@@ -50,7 +51,14 @@ export default {
     };
   },
   mounted() {
-    this.table_data = api.get_fix_list();
+    // this.table_data = api.get_fix_list();
+    Axios({
+      url:"/fix",
+      method:"get"
+    }).then((res)=>{
+      console.log(res.data)
+      this.table_data = res.data
+    })
   },
   methods: {
     to_job(fix_id){
