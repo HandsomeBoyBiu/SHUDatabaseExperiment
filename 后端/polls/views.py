@@ -63,14 +63,16 @@ def reg_fix_table(request):
     fixtable = FixTables(car_id=data['car_id'], priority=data['priority'], fix_type=data['type'], pay=data['pay'],
                          in_time=data['in_time'], clerk_name=data['clerk_name'], clerk_id=data['clerk_id'],
                          est_time=data['est_time'], describe=data['describe'])
+    print(fixtable)
     fixtable.save()
     response = HttpResponse()
-    response.status_code = 500
+    response.status_code = 200
     return response
 
 
 # 由于派工单需要两种请求方式，因此这里写了一个分支
 def repair_order(request):
+    print("### [Branch] repair_order ###")
     if request.method == 'GET':
         return get_tickets(request)
     elif request.method == 'POST':
@@ -79,10 +81,18 @@ def repair_order(request):
 
 # 派工单的post请求
 def post_repair_order(request):
+    print('### [Request POST] post_repair_order ###')
     # 这里需要两步
+    para = request.GET.get('fix_id')                    # 获取url中的请求参数
+    data = json.loads(request.body.decode('utf-8'))     # 获取POST的数据
     # 1、删除原有数据
+    JoinTables.objects.filter(fix_id=para).delete()
     # 2、新增数据
-    return 0
+    for d in data:
+        JoinTables(fix_id=para, fix_man_id=d['worker_id'], project_table_id=d['job_id'], work_time=d['time']).save()
+    response = HttpResponse()
+    response.status_code = 200
+    return response
 
 
 # def car_post(request):
