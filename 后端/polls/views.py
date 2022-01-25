@@ -75,6 +75,13 @@ def reg_fix_table(request):
     return response
 
 
+def branch_fix(request):
+    if request.method == 'POST':
+        return reg_fix_table(request)
+    elif request.method == 'GET':
+        return get_fix(request)
+
+
 # 由于派工单需要两种请求方式，因此这里写了一个分支
 def repair_order(request):
     print("### [Branch] repair_order ###")
@@ -88,8 +95,8 @@ def repair_order(request):
 def post_repair_order(request):
     print('### [Request POST] post_repair_order ###')
     # 这里需要两步
-    para = request.GET.get('fix_id')                    # 获取url中的请求参数
-    data = json.loads(request.body.decode('utf-8'))     # 获取POST的数据
+    para = request.GET.get('fix_id')  # 获取url中的请求参数
+    data = json.loads(request.body.decode('utf-8'))  # 获取POST的数据
     # 1、删除原有数据
     JoinTables.objects.filter(fix_id=para).delete()
     # 2、新增数据
@@ -127,11 +134,15 @@ def get_tickets(request):
     # print(res)
     tickets = list(res)
     for ticket in tickets:
-        ls = {'job_id': ticket.project_table_id,
-              'fix_name': list(ProjectTable.objects.filter(project_table_id=ticket.project_table_id))[0].project_type,
-              'time': ticket.work_time, 'work_id': ticket.fix_man_id,
-              'worker_name': list(FixMan.objects.filter(fix_man_id=ticket.fix_man_id))[0].work_type}
-        jsonlist.append(ls)
+        try:
+            ls = {'job_id': ticket.project_table_id,
+                  'fix_name': list(ProjectTable.objects.filter(project_table_id=ticket.project_table_id))[
+                      0].project_type,
+                  'time': ticket.work_time, 'work_id': ticket.fix_man_id,
+                  'worker_name': list(FixMan.objects.filter(fix_man_id=ticket.fix_man_id))[0].work_type}
+            jsonlist.append(ls)
+        except:
+            jsonlist.append([])
     return HttpResponse(json.dumps(jsonlist, ensure_ascii=False))
 
 
@@ -157,13 +168,14 @@ def get_client(request):
     print('### [Request GET] get_client ###')
     qs = Clients.objects.values_list("client_id", "client_name", "client_type", "discount", "contact", "tel",
                                      named=True)
-    qs1 = Cars.objects.values_list('car_id', "car_color", "car_series", "car_type")
     clients = Clients.objects.all()
     clients.query = pickle.loads(pickle.dumps(qs.query))
     ls = list(clients)
     print(ls)
-    custom = clients[0]
+    # custom = clients[0]
     for custom in clients:
+        qs1 = Cars.objects.filter(belonging=custom['client_id']).values_list('car_id', "car_color", "car_series",
+                                                                             "car_type")
         custom['cars'] = car_exchange(qs1, custom['client_id'])
     # cars = Cars.objects.filter(belonging=1)
     # cars.query = pickle.loads((pickle.dumps(qs1.query)))
@@ -195,7 +207,10 @@ def get_fix(request):
     fix_tables.query = pickle.loads(pickle.dumps(qs.query))
     ls = list(fix_tables)
     for fix_table in ls:
-        fix_table['client_id'] = list(Cars.objects.filter(car_id=fix_table['car_id']))[0].belonging
+        try:
+            fix_table['client_id'] = list(Cars.objects.filter(car_id=fix_table['car_id']))[0].belonging
+        except:
+            fix_table['client_id'] = []
     print(ls)
     return HttpResponse(json.dumps(ls, ensure_ascii=False, cls=ComplexEncoder))
 
