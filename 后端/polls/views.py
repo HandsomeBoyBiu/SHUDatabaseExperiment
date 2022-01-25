@@ -8,6 +8,7 @@ from django.template import loader
 # from numpy import fix
 from .models import *
 import json
+from django.core import serializers
 # from .forms import NameForm
 from django.http import HttpResponseRedirect
 
@@ -111,12 +112,13 @@ def get_tickets(request):
 
 
 # 获取所有车辆信息 获得数据库中已有的车辆信息 GET {baseURL}/cars
+# 测试成功了大概也许8
 def get_all_cars(request):
     print('### [Request GET] get_all_cars ###')
-    data = {}
-    cars = Cars.objects.all()
-    data['data'] = list(cars)
-    return HttpResponse(json.dumps(data))
+    cars = Cars.objects.filter(car_id='asd')
+    data = serializers.serialize("json", cars)
+    print(data)
+    return HttpResponse(data)
 
 
 # 获取数据库中客户信息 GET {baseURL}/client ?加入一个cars有问题 暂时不会

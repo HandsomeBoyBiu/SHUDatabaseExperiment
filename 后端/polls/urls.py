@@ -8,5 +8,6 @@ urlpatterns = [
     path('car/', views.reg_car, name='reg_car'),
     path('client', views.reg_client, name='reg_client'),
     path('fix', views.reg_fix_table, name='reg_fix_table'),
-    path('job', views.repair_order, name='repair_order')
+    path('job', views.repair_order, name='repair_order'),
+    path('cars', views.get_all_cars, name='get_all_cars')
 ]
