@@ -88,8 +88,8 @@ def repair_order(request):
 def post_repair_order(request):
     print('### [Request POST] post_repair_order ###')
     # 这里需要两步
-    para = request.GET.get('fix_id')                    # 获取url中的请求参数
-    data = json.loads(request.body.decode('utf-8'))     # 获取POST的数据
+    para = request.GET.get('fix_id')  # 获取url中的请求参数
+    data = json.loads(request.body.decode('utf-8'))  # 获取POST的数据
     # 1、删除原有数据
     JoinTables.objects.filter(fix_id=para).delete()
     # 2、新增数据
@@ -157,13 +157,14 @@ def get_client(request):
     print('### [Request GET] get_client ###')
     qs = Clients.objects.values_list("client_id", "client_name", "client_type", "discount", "contact", "tel",
                                      named=True)
-    qs1 = Cars.objects.values_list('car_id', "car_color", "car_series", "car_type")
     clients = Clients.objects.all()
     clients.query = pickle.loads(pickle.dumps(qs.query))
     ls = list(clients)
     print(ls)
-    custom = clients[0]
+    # custom = clients[0]
     for custom in clients:
+        qs1 = Cars.objects.filter(belonging=custom['client_id']).values_list('car_id', "car_color", "car_series",
+                                                                             "car_type")
         custom['cars'] = car_exchange(qs1, custom['client_id'])
     # cars = Cars.objects.filter(belonging=1)
     # cars.query = pickle.loads((pickle.dumps(qs1.query)))
