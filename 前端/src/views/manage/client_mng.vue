@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <h3>客户列表</h3>
-    <el-table :data="table_data" border=true>
+    <el-table :data="table_data" border="true">
       <el-table-column label="客户编号" prop="client_id" width="110" sortable />
       <el-table-column label="客户名称" prop="client_name" sortable />
       <el-table-column
@@ -25,13 +25,13 @@
       <el-table-column label="手机号" prop="tel" sortable />
       <el-table-column label="拥有车辆">
         <template slot-scope="scope">
-          <div v-for="item in scope.row.cars" :key="item.car_id">
+          <div v-for="item in scope.row.cars" :key="item.id">
             <el-popover trigger="hover" placement="top">
               <p>车型: {{ item.series }}</p>
               <p>颜色: {{ item.color }}</p>
               <p>类型: {{ item.type }}</p>
               <div slot="reference" style="float: left">
-                <el-tag size="medium">{{ item.car_id }}</el-tag>
+                <el-tag size="medium">{{ item.id }}</el-tag>
               </div>
             </el-popover>
           </div>
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import api from "@/utils/api";
+import Axios from "axios";
 export default {
   data() {
     return {
@@ -61,7 +61,14 @@ export default {
     };
   },
   mounted() {
-    this.table_data = api.get_client_list();
+    Axios({
+      url: "/client",
+      method: "get",
+      crossdomain: true,
+    }).then((res) => {
+      this.table_data = res.data;
+      console.log(JSON.stringify(this.table_data));
+    });
   },
   methods: {},
 };

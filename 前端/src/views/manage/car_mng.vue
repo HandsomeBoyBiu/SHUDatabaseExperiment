@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <h3>车辆列表</h3>
-    <el-table :data="table_data" border=true>
-      <el-table-column label="车牌号" prop="car_id" sortable />
+    <el-table :data="table_data" border="true">
+      <el-table-column label="车牌号" prop="id" sortable />
       <el-table-column label="颜色" prop="color" sortable />
       <el-table-column label="车型" prop="series" sortable />
       <el-table-column label="车辆类别" prop="type" sortable />
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import api from "@/utils/api";
+import Axios from "axios";
 export default {
   data() {
     return {
@@ -31,7 +31,13 @@ export default {
     };
   },
   mounted() {
-    this.table_data = api.get_car_list();
+    Axios({
+      url: "/cars",
+      method: "get",
+      crossdomain: true,
+    }).then((res) => {
+      this.table_data = res.data;
+    });
   },
   methods: {},
 };

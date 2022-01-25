@@ -64,7 +64,7 @@ export default {
     bind_submit_car() {
       // Axios.post('/car/', this.car_form);
       Axios({
-        url: "/car/",
+        url: "/car",
         method: "post",
         crossdomain: true,
         data: this.car_form,
@@ -78,18 +78,6 @@ export default {
       });
       this.active_tab = "client";
     },
-    bind_submit_client() {
-      Axios.post("/client", this.client_form);
-      // Axios.post('localhost:9999', this.client_form)
-      console.log(JSON.stringify(this.client_form));
-      this.$message({
-        message: "客户登记成功",
-        type: "success",
-      });
-    },
-    // selected_car() {
-
-    // }
   },
 };
 </script>

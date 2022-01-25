@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form ref="client_form" :model="client_form" label-width="100px" style="max-width: 1200px">
       <el-form-item label="客户名称">
-        <el-input v-model="client_form.client_name" @input="on_client_name_change" class="short"/>
+        <el-input v-model="client_form.client_name" @input="on_client_name_change" class="short" />
       </el-form-item>
 
       <el-form-item label="客户类型">
@@ -17,16 +17,16 @@
       </el-form-item>
 
       <el-form-item label="联系人">
-        <el-input v-model="client_form.contact" :disabled="contact_disable" class="short"/>
+        <el-input v-model="client_form.contact" :disabled="contact_disable" class="short" />
       </el-form-item>
 
       <el-form-item label="手机号">
-        <el-input v-model="client_form.tel" class="short"/>
+        <el-input v-model="client_form.tel" class="short" />
       </el-form-item>
 
       <el-form-item label="车牌号">
         <el-select v-model="client_form.car_id" filterable>
-          <el-option v-for="item in car_list" :key="item.car_id" :value="item.car_id" :label="item.car_id" />
+          <el-option v-for="item in car_list" :key="item.id" :value="item.id" :label="item.id" />
         </el-select>
         <!-- <el-button @click="bind_add_car" type="primary" icon="el-icon-plus" size="small" plain> 新增 </el-button> -->
         <!-- 颜色:{{ selected_car.color }} 车型:{{ selected_car.series }} 车辆类别:{{ selected_car.type }} -->
@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import api from "@/utils/api";
 import Axios from "axios";
 export default {
   data() {
@@ -60,7 +59,13 @@ export default {
     };
   },
   mounted() {
-    this.car_list = api.get_car_list();
+    Axios({
+      url: "/cars",
+      method: "get",
+      crossdomain: true,
+    }).then((res) => {
+      this.car_list = res.data;
+    });
   },
   computed: {
     // selected_car: function () {
@@ -97,31 +102,15 @@ export default {
     //   console.log(ret);
     //   callback(ret);
     // },
-    bind_add_car() {
-      this.active_tab = "car";
-    },
-    bind_submit_car() {
-      // Axios.post('/car/', this.car_form);
+    bind_submit_client() {
       Axios({
-        url: "/car/",
+        url: "/client",
         method: "post",
         crossdomain: true,
-        data: this.car_form,
+        data: this.client_form,
       }).then((res) => {
         console.log(res.data);
       });
-      console.log(JSON.stringify(this.car_form));
-      this.car_list = api.get_car_list();
-      this.client_form.car_id = this.car_form.car_id;
-      this.$message({
-        message: "车辆登记成功",
-        type: "success",
-      });
-      this.active_tab = "client";
-    },
-    bind_submit_client() {
-      Axios.post("/client", this.client_form);
-      // Axios.post('localhost:9999', this.client_form)
       console.log(JSON.stringify(this.client_form));
       this.$message({
         message: "客户登记成功",

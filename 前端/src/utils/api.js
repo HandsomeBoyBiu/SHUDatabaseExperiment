@@ -1,12 +1,22 @@
+import Axios from "axios";
+
 let api = {
   get_car_list() {
-    return [
-      { car_id: "沪A12345", color: "白色", series: "桑塔纳", type: "轿车" },
-      { car_id: "沪A23456", color: "蓝色", series: "途安", type: "SUV" },
-    ];
+    return Axios({
+        url: "/cars",
+        method: "get",
+        crossdomain: true,
+      }).then((res) => {
+        ret(res.data);
+      });
+      // return [
+    //   { car_id: "沪A12345", color: "白色", series: "桑塔纳", type: "轿车" },
+    //   { car_id: "沪A23456", color: "蓝色", series: "途安", type: "SUV" },
+    // ];
   },
   get_client_list() {
-    return [
+
+    /* return [
       {
         client_id: '1',
         client_name: '王波',
@@ -31,7 +41,7 @@ let api = {
           { car_id: "沪C23456", color: "蓝色", series: "途安", type: "SUV" },
         ]
       }
-    ]
+    ] */
   },
   get_fix_list() {
     return [
@@ -63,23 +73,23 @@ let api = {
       },
     ]
   },
-  get_job_list(fix_id){
+  get_job_list(fix_id) {
     return [
       {
-          "job_id":"012",
-           "fix_name":"维修车头",
-           "time":"5",
-           "worker_id":"012",
-           "worker_name":"机修"
+        "job_id": "012",
+        "fix_name": "维修车头",
+        "time": "5",
+        "worker_id": "012",
+        "worker_name": "机修"
       },
       {
-          "job_id":"017",
-          "fix_name":"更换车灯",
-          "time":"1",
-          "worker_id":"012",
-          "worker_name":"机修"
+        "job_id": "017",
+        "fix_name": "更换车灯",
+        "time": "1",
+        "worker_id": "012",
+        "worker_name": "机修"
       }
-  ]
+    ]
   }
 
 };
