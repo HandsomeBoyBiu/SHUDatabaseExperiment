@@ -6,6 +6,7 @@ from django.core import serializers
 from django.core import serializers
 from django.http import HttpResponseRedirect
 import pickle
+import random
 
 from datetime import date, datetime
 
@@ -81,16 +82,6 @@ def branch_fix(request):
     elif request.method == 'GET':
         return get_fix(request)
 
-
-# 由于派工单需要两种请求方式，因此这里写了一个分支
-def repair_order(request):
-    print("### [Branch] repair_order ###")
-    if request.method == 'GET':
-        return get_tickets(request)
-    elif request.method == 'POST':
-        return post_repair_order(request)
-
-
 # 派工单的post请求
 def post_repair_order(request):
     print('### [Request POST] post_repair_order ###')
@@ -101,11 +92,23 @@ def post_repair_order(request):
     JoinTables.objects.filter(fix_id=para).delete()
     # 2、新增数据
     for d in data:
-        JoinTables(fix_id=para, fix_man_id=d['worker_id'], project_table_id=d['job_id'], work_time=d['time']).save()
+        # JoinTables(fix_id=para, fix_man_id=d['worker_id'], project_table_id=d['job_id'], work_time=d['time']).save()
+        # 员工表查找
+        fm = FixMan.objects.filter(work_type=d['worker_name']).order_by('?')[:1]
+        jn = ProjectTable.objects.filter(project_type=d['job_name']).order_by('?')[:1]
+        var = JoinTables(fix_id=para, fix_man_id=fm.value('fix_man_id'), project_table_id=jn.value('project_table_id'),
+                         work_time=d['time']).save()
     response = HttpResponse()
     response.status_code = 200
     return response
 
+# 由于派工单需要两种请求方式，因此这里写了一个分支
+def repair_order(request):
+    print("### [Branch] repair_order ###")
+    if request.method == 'GET':
+        return get_tickets(request)
+    elif request.method == 'POST':
+        return post_repair_order(request)
 
 # def car_post(request):
 # form = NameForm(request.POST)
