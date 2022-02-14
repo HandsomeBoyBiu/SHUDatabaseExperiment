@@ -24,20 +24,18 @@
     <hr />
     <h3>添加项目</h3>
     <el-form inline ref="form">
-      <el-form-item label="维修项目编号">
-        <el-input size="mini" v-model="form.job_id" />
-      </el-form-item>
       <el-form-item label="维修项目">
-        <el-input size="mini" v-model="form.job_name" />
+        <el-select v-model="form.job_name" filterable>
+          <el-option v-for="item in job_opts" :key="item" :label="item" :value="item" />
+        </el-select>
       </el-form-item>
       <el-form-item label="工时">
-        <el-input size="mini" v-model="form.time" />
-      </el-form-item>
-      <el-form-item label="维修员编号">
-        <el-input size="mini" v-model="form.worker_id" />
+        <el-input v-model="form.time" />
       </el-form-item>
       <el-form-item label="维修员工种">
-        <el-input size="mini" v-model="form.worker_name" />
+        <el-select v-model="form.worker_name" filterable>
+          <el-option v-for="item in worker_opts" :key="item" :label="item" :value="item" />
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="bind_add" size="mini" style="margin: 0 0 0 20px"> 添加 </el-button>
@@ -54,13 +52,15 @@ export default {
     return {
       fix_id: "",
       form: {
-        job_id: "",
+        job_id: "待分配",
         job_name: "",
         time: "",
-        worker_id: "",
+        worker_id: "待分配",
         worker_name: "",
       },
       table_data: [],
+      job_opts: ["维修车头", "维修车尾"],
+      worker_opts: ["机修工", "油漆工"],
     };
   },
   mounted() {
@@ -84,7 +84,7 @@ export default {
       Axios({
         url: "/job?fix_id=" + this.fix_id,
         method: "post",
-        data: this.table_data
+        data: this.table_data,
       }).then((res) => {
         console.log(res);
       });
