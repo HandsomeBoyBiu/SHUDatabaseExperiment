@@ -59,8 +59,8 @@ export default {
         worker_name: "",
       },
       table_data: [],
-      job_opts: ["维修车头", "维修车尾"],
-      worker_opts: ["机修工", "油漆工"],
+      job_opts: ["维修前灯", "维修后灯", "钣金", "喷漆", "电路", "内饰修整"],
+      worker_opts: ["机修工", "油漆工", "钣金工", "电工", "车灯维修工", "内饰维修工"],
     };
   },
   mounted() {

@@ -94,10 +94,12 @@ def post_repair_order(request):
     for d in data:
         # JoinTables(fix_id=para, fix_man_id=d['worker_id'], project_table_id=d['job_id'], work_time=d['time']).save()
         # 员工表查找
-        fm = FixMan.objects.filter(work_type=d['worker_name']).order_by('?')[:1]
-        jn = ProjectTable.objects.filter(project_type=d['job_name']).order_by('?')[:1]
-        var = JoinTables(fix_id=para, fix_man_id=fm.value('fix_man_id'), project_table_id=jn.value('project_table_id'),
-                         work_time=d['time']).save()
+        # fm = FixMan.objects.filter(work_type=d['worker_name']).order_by('?')[0]
+        # jn = ProjectTable.objects.filter(project_type=d['job_name']).order_by('?')[0]
+        fm = FixMan.objects.get(work_type=d['worker_name'])
+        jn = ProjectTable.objects.get(project_type=d['job_name'])
+        JoinTables(fix_id=para, fix_man_id=fm.fix_man_id, project_table_id=jn.project_table_id,
+                           work_time=d['time']).save()
     response = HttpResponse()
     response.status_code = 200
     return response
