@@ -9,4 +9,5 @@ urlpatterns = [
     path('fix', views.branch_fix, name='branch_fix'),               # fix分支
     path('job', views.repair_order, name='repair_order'),
     path('cars', views.get_all_cars, name="get_all_cars"),
+    path('getreport',views.get_report,name="get+report")
 ]

@@ -82,6 +82,7 @@ def branch_fix(request):
     elif request.method == 'GET':
         return get_fix(request)
 
+
 # 派工单的post请求
 def post_repair_order(request):
     print('### [Request POST] post_repair_order ###')
@@ -99,10 +100,11 @@ def post_repair_order(request):
         fm = FixMan.objects.get(work_type=d['worker_name'])
         jn = ProjectTable.objects.get(project_type=d['job_name'])
         JoinTables(fix_id=para, fix_man_id=fm.fix_man_id, project_table_id=jn.project_table_id,
-                           work_time=d['time']).save()
+                   work_time=d['time']).save()
     response = HttpResponse()
     response.status_code = 200
     return response
+
 
 # 由于派工单需要两种请求方式，因此这里写了一个分支
 def repair_order(request):
@@ -111,6 +113,7 @@ def repair_order(request):
         return get_tickets(request)
     elif request.method == 'POST':
         return post_repair_order(request)
+
 
 # def car_post(request):
 # form = NameForm(request.POST)
@@ -217,6 +220,33 @@ def get_fix(request):
         except:
             fix_table['client_id'] = []
     print(ls)
+    return HttpResponse(json.dumps(ls, ensure_ascii=False, cls=ComplexEncoder))
+
+
+def get_report(request):
+    print('### [Request GET] get_report ###')
+    qs = FixTables.objects.values_list("fix_id", "car_id", "priority", "fix_type", "pay", "in_time",
+                                       "clerk_name", "clerk_id", "est_time", "describe", named=True)
+    fix_tables = FixTables.objects.all()
+    fix_tables.query = pickle.loads(pickle.dumps(qs.query))
+    ls = list(fix_tables)
+    for fix_table in ls:
+        try:
+            fix_table['client_id'] = list(Cars.objects.filter(car_id=fix_table['car_id']))[0].belonging
+            fix_table['discount'] = list(Clients.objects.filter(client_id=fix_table['client_id']))[0].discount
+            fix_table['fix_man_id'] = list(JoinTables.objects.filter(fix_id=fix_table['fix_id']))[0].fix_man_id
+            fix_table['work_time'] = list(JoinTables.objects.filter(fix_id=fix_table['fix_id']))[0].work_time
+            fix_table['unit_price'] = list(FixMan.objects.filter(fix_man_id=fix_table['fix_man_id']))[0].unit_price
+            fix_table['all_price'] = fix_table['unit_price'] / 100.0 * fix_table['work_time']
+        except:
+            fix_table['client_id'] = []
+            fix_table['discount'] = []
+            fix_table['fix_man_id'] = []
+            fix_table['work_time'] = []
+            fix_table['unit_price'] = []
+            fix_table['all_price'] = []
+    print(ls)
+    # print(list(FixMan.object.filter(fix_man_id=fix_table['fix_man_id']))[0].unit_price)
     return HttpResponse(json.dumps(ls, ensure_ascii=False, cls=ComplexEncoder))
 
 
