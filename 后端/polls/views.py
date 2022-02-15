@@ -104,21 +104,6 @@ def repair_order(request):
         return post_repair_order(request)
 
 
-# def car_post(request):
-# form = NameForm(request.POST)
-# print(form)
-# if form.is_valid():
-#     # sql语句
-#     return HttpResponse.http.OK
-
-
-# def car_get(request):
-# form = NameForm(request.GET)
-# print(form)
-# if form.is_valid():
-#     # sql语句
-#     return HttpResponse.http.OK
-
 # 派工单的GET请求
 # 查询工单 GET {baseURL}/job?fix_id={fix_id}
 # job_id,fix_name,time,work_id,worker_name
