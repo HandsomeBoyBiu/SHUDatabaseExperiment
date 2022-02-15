@@ -217,28 +217,61 @@ def get_report(request):
     fix_tables.query = pickle.loads(pickle.dumps(qs.query))
     ls = list(fix_tables)
     lis = []
-    for fix_table in ls:
-        if fix_table['fix_id'] == int(fix_id):
+    for fix_tabl in ls:
+        if fix_tabl['fix_id'] == int(fix_id):
             try:
-                fix_table['client_id'] = list(Cars.objects.filter(car_id=fix_table['car_id']))[0].belonging
-                fix_table['client_name'] = list(Clients.objects.filter(client_id=fix_table['client_id']))[0].client_name
-                fix_table['client_type'] = list(Clients.objects.filter(client_id=fix_table['client_id']))[0].client_type
-                fix_table['discount'] = list(Clients.objects.filter(client_id=fix_table['client_id']))[0].discount
-                fix_table['worker_id'] = list(JoinTables.objects.filter(fix_id=fix_table['fix_id']))[0].fix_man_id
-                fix_table['time'] = list(JoinTables.objects.filter(fix_id=fix_table['fix_id']))[0].work_time
-                fix_table['unit_price'] = list(FixMan.objects.filter(fix_man_id=fix_table['worker_id']))[0].unit_price
-                fix_table['subtotal'] = fix_table['unit_price'] * fix_table['time']
+                fix_tabl['client_name'] = list(
+                    Clients.objects.filter(
+                        client_id=list(Cars.objects.filter(car_id=fix_tabl['car_id']))[0].belonging))[
+                    0].client_name
+                fix_tabl['client_type'] = list(
+                    Clients.objects.filter(client_id=list(Cars.objects.filter(car_id=a['car_id']))[0].belonging))[
+                    0].client_type
             except:
-                fix_table['client_id'] = []
-                fix_table['discount'] = []
-                fix_table['worker_id'] = []
-                fix_table['time'] = []
-                fix_table['unit_price'] = []
-                fix_table['subtotal'] = []
-            lis.append(fix_table)
-    print(ls)
+                pass
+            a = fix_tabl
+            # lis.append(fix_tabl)
+
+        else:
+            continue
+    jontalbes = JoinTables.objects.filter(fix_id=fix_id)
+    lss = list(jontalbes)
+    length = len(lss)
+    i = 0
+    abc = []
+    for fix_table in lss:
+        try:
+            js = {'job_id': list(JoinTables.objects.filter(fix_id=a['fix_id']))[i].project_table_id,
+                  'job_name': list(ProjectTable.objects.filter(
+                      project_table_id=list(JoinTables.objects.filter(fix_id=a['fix_id']))[i].project_table_id))[
+                      0].project_type,
+                  'worker_id': list(JoinTables.objects.filter(fix_id=a['fix_id']))[i].fix_man_id,
+                  'time': list(JoinTables.objects.filter(fix_id=a['fix_id']))[i].work_time,
+                  'unit_price': list(FixMan.objects.filter(
+                      fix_man_id=list(JoinTables.objects.filter(fix_id=a['fix_id']))[i].fix_man_id))[0].unit_price,
+                  'subtotal': list(FixMan.objects.filter(
+                      fix_man_id=list(JoinTables.objects.filter(fix_id=a['fix_id']))[i].fix_man_id))[0].unit_price *
+                              list(JoinTables.objects.filter(fix_id=a['fix_id']))[i].work_time,
+                  'worker_name': list(FixMan.objects.filter(
+                      fix_man_id=list(JoinTables.objects.filter(fix_id=a['fix_id']))[i].fix_man_id))[0].work_type
+                  }
+            i = i + 1
+        except:
+            # fix_table['client_id'] = []
+            # fix_table['discount'] = []
+            # fix_table['worker_id'] = []
+            # fix_table['time'] = []
+            # fix_table['unit_price'] = []
+            # fix_table['subtotal'] = []
+            js = {}
+        abc.append(js)
+    a['fix'] = abc
+
+    # zidian = {'fix': abc}
+    # lis.append(zidian)
+    # prin(ls)
     # print(list(FixMan.object.filter(fix_man_id=fix_table['fix_man_id']))[0].unit_price)
-    return HttpResponse(json.dumps(lis, ensure_ascii=False, cls=ComplexEncoder))
+    return HttpResponse(json.dumps(a, ensure_ascii=False, cls=ComplexEncoder))
 
 
 class ComplexEncoder(json.JSONEncoder):
