@@ -34,7 +34,7 @@
           { text: '已完成', value: true },
           { text: '进行中', value: false },
         ]"
-        :filter-method="(value, row) => row.priority === value"
+        :filter-method="(value, row) => row.status === value"
       >
         <template slot-scope="scope">
           <el-tag :type="scope.row.status ? 'success' : 'danger'">
