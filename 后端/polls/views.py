@@ -7,6 +7,8 @@ from django.core import serializers
 from django.http import HttpResponseRedirect
 import pickle
 from datetime import date, datetime
+
+
 # Create your views here.
 
 
@@ -187,8 +189,17 @@ def get_fix(request):
     fix_tables = FixTables.objects.all()
     fix_tables.query = pickle.loads(pickle.dumps(qs.query))
     ls = list(fix_tables)
-    print(ls)
     for fix_table in ls:
+        # ----------- 测试获取订单状态 -----------
+        tmpId = fix_table['fix_id']
+        tmpJoinedTable = JoinTables.objects.filter(fix_id=tmpId)
+        flag = True
+        for table in tmpJoinedTable:
+            if not table.status:
+                flag = False
+                break
+        fix_table['status'] = flag
+        # ----------- 测试获取订单状态 -----------
         try:
             fix_table['client_id'] = list(Cars.objects.filter(car_id=fix_table['car_id']))[0].belonging
         except:
