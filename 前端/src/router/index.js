@@ -110,6 +110,13 @@ export const constantRoutes = [
         component: () => import('@/views/manage/fix_mng'),
         meta: { title: '维修委托管理', icon: 'el-icon-s-custom' }
       },
+      {
+        path:'report',
+        name:'report',
+        component:()=>import('@/views/manage/report'),
+        meta: { title: 'report', icon: 'el-icon-s-custom' }
+
+      }
     ]
 
   },

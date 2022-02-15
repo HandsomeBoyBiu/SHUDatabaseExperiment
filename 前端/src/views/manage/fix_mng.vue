@@ -37,14 +37,14 @@
         :filter-method="(value, row) => row.status === value"
       >
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status ? 'success' : 'danger'" @click="to_reort(scope.row.fix_id)">
+          <el-button @click="to_report(scope.row.fix_id)" :type="scope.row.status ? 'success' : 'danger'" size="small" plain >
             {{ scope.row.status ? "已完成" : "进行中" }}
-          </el-tag>
+          </el-button>
         </template>
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button @click.native.prevent="to_job(scope.row.fix_id)" type="success" size="small" plain
+          <el-button @click="to_job(scope.row.fix_id)" type="success" size="small" plain
             >管理派工单</el-button
           >
         </template>
@@ -63,14 +63,14 @@ export default {
     };
   },
   mounted() {
-    // this.table_data = api.get_fix_list();
-    Axios({
-      url: "/fix",
-      method: "get",
-    }).then((res) => {
-      console.log(res.data);
-      this.table_data = res.data;
-    });
+    this.table_data = api.get_fix_list();
+    // Axios({
+    //   url: "/fix",
+    //   method: "get",
+    // }).then((res) => {
+    //   console.log(res.data);
+    //   this.table_data = res.data;
+    // });
   },
   methods: {
     to_job(fix_id) {
