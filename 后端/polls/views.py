@@ -210,29 +210,35 @@ def get_fix(request):
 
 def get_report(request):
     print('### [Request GET] get_report ###')
+    fix_id = request.GET.get('fix_id')
     qs = FixTables.objects.values_list("fix_id", "car_id", "priority", "fix_type", "pay", "in_time",
                                        "clerk_name", "clerk_id", "est_time", "describe", named=True)
     fix_tables = FixTables.objects.all()
     fix_tables.query = pickle.loads(pickle.dumps(qs.query))
     ls = list(fix_tables)
+    lis = []
     for fix_table in ls:
-        try:
-            fix_table['client_id'] = list(Cars.objects.filter(car_id=fix_table['car_id']))[0].belonging
-            fix_table['discount'] = list(Clients.objects.filter(client_id=fix_table['client_id']))[0].discount
-            fix_table['fix_man_id'] = list(JoinTables.objects.filter(fix_id=fix_table['fix_id']))[0].fix_man_id
-            fix_table['work_time'] = list(JoinTables.objects.filter(fix_id=fix_table['fix_id']))[0].work_time
-            fix_table['unit_price'] = list(FixMan.objects.filter(fix_man_id=fix_table['fix_man_id']))[0].unit_price
-            fix_table['all_price'] = fix_table['unit_price'] / 100.0 * fix_table['work_time']
-        except:
-            fix_table['client_id'] = []
-            fix_table['discount'] = []
-            fix_table['fix_man_id'] = []
-            fix_table['work_time'] = []
-            fix_table['unit_price'] = []
-            fix_table['all_price'] = []
+        if fix_table['fix_id'] == int(fix_id):
+            try:
+                fix_table['client_id'] = list(Cars.objects.filter(car_id=fix_table['car_id']))[0].belonging
+                fix_table['client_name'] = list(Clients.objects.filter(client_id=fix_table['client_id']))[0].client_name
+                fix_table['client_type'] = list(Clients.objects.filter(client_id=fix_table['client_id']))[0].client_type
+                fix_table['discount'] = list(Clients.objects.filter(client_id=fix_table['client_id']))[0].discount
+                fix_table['worker_id'] = list(JoinTables.objects.filter(fix_id=fix_table['fix_id']))[0].fix_man_id
+                fix_table['time'] = list(JoinTables.objects.filter(fix_id=fix_table['fix_id']))[0].work_time
+                fix_table['unit_price'] = list(FixMan.objects.filter(fix_man_id=fix_table['worker_id']))[0].unit_price
+                fix_table['subtotal'] = fix_table['unit_price'] * fix_table['time']
+            except:
+                fix_table['client_id'] = []
+                fix_table['discount'] = []
+                fix_table['worker_id'] = []
+                fix_table['time'] = []
+                fix_table['unit_price'] = []
+                fix_table['subtotal'] = []
+            lis.append(fix_table)
     print(ls)
     # print(list(FixMan.object.filter(fix_man_id=fix_table['fix_man_id']))[0].unit_price)
-    return HttpResponse(json.dumps(ls, ensure_ascii=False, cls=ComplexEncoder))
+    return HttpResponse(json.dumps(lis, ensure_ascii=False, cls=ComplexEncoder))
 
 
 class ComplexEncoder(json.JSONEncoder):
