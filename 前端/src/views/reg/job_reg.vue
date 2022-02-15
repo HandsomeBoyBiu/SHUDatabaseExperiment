@@ -8,7 +8,15 @@
       <el-table-column label="工时" prop="time" />
       <el-table-column label="维修员编号" prop="worker_id" />
       <el-table-column label="维修员工种" prop="worker_name" />
+      <el-table-column label="状态">
+        <template slot-scope="scope">
+          <el-checkbox v-model="scope.row.status" border>
+            {{scope.row.status ? "已完成" : "进行中"}}
+          </el-checkbox>
+        </template>
+      </el-table-column>
       <el-table-column fixed="right" label="操作" width="120">
+        <!-- 删除 -->
         <template slot-scope="scope">
           <el-button
             @click.native.prevent="deleteRow(scope.$index)"
@@ -65,19 +73,19 @@ export default {
   },
   mounted() {
     this.fix_id = this.$route.query.fix_id;
-    // this.table_data = api.get_job_list(this.fix_id)
-    Axios({
-      url: "/job?fix_id=" + this.fix_id,
-      method: "get",
-    }).then((res) => {
-      console.log(JSON.stringify(res.data));
-      this.table_data = res.data;
-    });
+    this.table_data = api.get_job_list(this.fix_id)
+    // Axios({
+    //   url: "/job?fix_id=" + this.fix_id,
+    //   method: "get",
+    // }).then((res) => {
+    //   console.log(JSON.stringify(res.data));
+    //   this.table_data = res.data;
+    // });
   },
   methods: {
     bind_add() {
       this.table_data.push(this.form);
-      this.form = { job_id: "", job_name: "", time: "", worker_id: "", worker_name: "" };
+      this.form = { job_id: "待分配", job_name: "", time: "", worker_id: "待分配", worker_name: "" };
     },
     bind_submit() {
       console.log(JSON.stringify(this.table_data));
