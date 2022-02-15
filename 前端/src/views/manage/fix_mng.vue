@@ -37,7 +37,7 @@
         :filter-method="(value, row) => row.status === value"
       >
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status ? 'success' : 'danger'">
+          <el-tag :type="scope.row.status ? 'success' : 'danger'" @click="to_reort(scope.row.fix_id)">
             {{ scope.row.status ? "已完成" : "进行中" }}
           </el-tag>
         </template>
@@ -76,6 +76,10 @@ export default {
     to_job(fix_id) {
       // console.log(fix_id)
       this.$router.push({ path: "/reg/job_reg", query: { fix_id } });
+    },
+    to_report(fix_id) {
+      console.log(fix_id)
+      this.$router.push({ path: "/manage/report", query: { fix_id } });
     },
   },
 };
