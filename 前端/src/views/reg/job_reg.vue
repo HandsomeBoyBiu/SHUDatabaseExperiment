@@ -8,7 +8,15 @@
       <el-table-column label="工时" prop="time" />
       <el-table-column label="维修员编号" prop="worker_id" />
       <el-table-column label="维修员工种" prop="worker_name" />
+      <el-table-column label="状态">
+        <template slot-scope="scope">
+          <el-checkbox v-model="scope.row.status" border>
+            {{scope.row.status ? "已完成" : "进行中"}}
+          </el-checkbox>
+        </template>
+      </el-table-column>
       <el-table-column fixed="right" label="操作" width="120">
+        <!-- 删除 -->
         <template slot-scope="scope">
           <el-button
             @click.native.prevent="deleteRow(scope.$index)"
@@ -57,6 +65,7 @@ export default {
         time: "",
         worker_id: "待分配",
         worker_name: "",
+        status: false,
       },
       table_data: [],
       job_opts: ["维修前灯", "维修后灯", "钣金", "喷漆", "电路", "内饰修整"],
@@ -77,7 +86,7 @@ export default {
   methods: {
     bind_add() {
       this.table_data.push(this.form);
-      this.form = { job_id: "", job_name: "", time: "", worker_id: "", worker_name: "" };
+      this.form = { job_id: "待分配", job_name: "", time: "", worker_id: "待分配", worker_name: "", status: false };
     },
     bind_submit() {
       console.log(JSON.stringify(this.table_data));

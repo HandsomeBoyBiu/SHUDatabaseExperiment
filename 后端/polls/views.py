@@ -6,17 +6,10 @@ from django.core import serializers
 from django.core import serializers
 from django.http import HttpResponseRedirect
 import pickle
-import random
-
 from datetime import date, datetime
 
 
 # Create your views here.
-
-
-def index(request):
-    template = loader.get_template('../polls/templates/polls/index.html')
-    return HttpResponse(template.render(request))
 
 
 # 测试成功
@@ -93,14 +86,14 @@ def post_repair_order(request):
     JoinTables.objects.filter(fix_id=para).delete()
     # 2、新增数据
     for d in data:
-        # JoinTables(fix_id=para, fix_man_id=d['worker_id'], project_table_id=d['job_id'], work_time=d['time']).save()
-        # 员工表查找
-        # fm = FixMan.objects.filter(work_type=d['worker_name']).order_by('?')[0]
-        # jn = ProjectTable.objects.filter(project_type=d['job_name']).order_by('?')[0]
         fm = FixMan.objects.get(work_type=d['worker_name'])
         jn = ProjectTable.objects.get(project_type=d['job_name'])
         JoinTables(fix_id=para, fix_man_id=fm.fix_man_id, project_table_id=jn.project_table_id,
+<<<<<<< HEAD
                    work_time=d['time']).save()
+=======
+                   work_time=d['time'], status=d['status']).save()
+>>>>>>> d8904e441b3abc59a6a01ea3c03420ba84ca0306
     response = HttpResponse()
     response.status_code = 200
     return response
@@ -114,6 +107,7 @@ def repair_order(request):
     elif request.method == 'POST':
         return post_repair_order(request)
 
+<<<<<<< HEAD
 
 # def car_post(request):
 # form = NameForm(request.POST)
@@ -129,6 +123,8 @@ def repair_order(request):
 # if form.is_valid():
 #     # sql语句
 #     return HttpResponse.http.OK
+=======
+>>>>>>> d8904e441b3abc59a6a01ea3c03420ba84ca0306
 
 # 派工单的GET请求
 # 查询工单 GET {baseURL}/job?fix_id={fix_id}
@@ -144,10 +140,11 @@ def get_tickets(request):
     for ticket in tickets:
         try:
             ls = {'job_id': ticket.project_table_id,
-                  'fix_name': list(ProjectTable.objects.filter(project_table_id=ticket.project_table_id))[
+                  'job_name': list(ProjectTable.objects.filter(project_table_id=ticket.project_table_id))[
                       0].project_type,
-                  'time': ticket.work_time, 'work_id': ticket.fix_man_id,
-                  'worker_name': list(FixMan.objects.filter(fix_man_id=ticket.fix_man_id))[0].work_type}
+                  'time': ticket.work_time, 'worker_id': ticket.fix_man_id,
+                  'worker_name': list(FixMan.objects.filter(fix_man_id=ticket.fix_man_id))[0].work_type,
+                  'status': ticket.status}
             jsonlist.append(ls)
         except:
             jsonlist.append([])
@@ -215,11 +212,21 @@ def get_fix(request):
     fix_tables.query = pickle.loads(pickle.dumps(qs.query))
     ls = list(fix_tables)
     for fix_table in ls:
+        # ----------- 测试获取订单状态 -----------
+        tmpId = fix_table['fix_id']
+        tmpJoinedTable = JoinTables.objects.filter(fix_id=tmpId)
+        flag = True
+        for table in tmpJoinedTable:
+            if not table.status:
+                flag = False
+                break
+        fix_table['status'] = flag
+        # ----------- 测试获取订单状态 -----------
         try:
             fix_table['client_id'] = list(Cars.objects.filter(car_id=fix_table['car_id']))[0].belonging
         except:
             fix_table['client_id'] = []
-    print(ls)
+    # print(ls)
     return HttpResponse(json.dumps(ls, ensure_ascii=False, cls=ComplexEncoder))
 
 

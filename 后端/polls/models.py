@@ -68,3 +68,4 @@ class JoinTables(models.Model):
     fix_man_id = models.IntegerField(null=True)                  # 维修员id
     project_table_id = models.IntegerField(null=True)            # 项目表id
     work_time = models.IntegerField(null=True)                      # 工作时长
+    status = models.BooleanField(default=False)                  # 表单状态（已完成/未完成）
