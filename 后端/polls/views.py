@@ -141,9 +141,9 @@ def get_tickets(request):
     for ticket in tickets:
         try:
             ls = {'job_id': ticket.project_table_id,
-                  'fix_name': list(ProjectTable.objects.filter(project_table_id=ticket.project_table_id))[
+                  'job_name': list(ProjectTable.objects.filter(project_table_id=ticket.project_table_id))[
                       0].project_type,
-                  'time': ticket.work_time, 'work_id': ticket.fix_man_id,
+                  'time': ticket.work_time, 'worker_id': ticket.fix_man_id,
                   'worker_name': list(FixMan.objects.filter(fix_man_id=ticket.fix_man_id))[0].work_type}
             jsonlist.append(ls)
         except:
