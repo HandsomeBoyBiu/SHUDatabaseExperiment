@@ -91,21 +91,24 @@
   data:[
       {
           "job_id":"012",
-           "fix_name":"维修车头",
+           "job_name":"维修车头",
            "time":"5",
            "worker_id":"012",
-           "worker_name":"机修"
+           "worker_name":"机修",
+           "status":"已完成",
       },
       {
           "job_id":"017",
-          "fix_name":"更换车灯",
+          "job_name":"更换车灯",
           "time":"1",
           "worker_id":"012",
-          "worker_name":"机修"
+          "worker_name":"机修",
+           "status":"已完成",
+          
       }
   ]
   ```
-
+  
 - 新增/修改派工单
   
   **修改和新建共用同一个接口，如果对应工单号下已有记录，则修改后上传，若无记录，则为新建**
@@ -118,14 +121,16 @@
            "fix_name":"维修车头",
            "time":"5",
            "worker_id":"012",
-           "worker_name":"机修"
+           "worker_name":"机修",
+           "status":"已完成",
       },
       {
           "job_id":"017",
           "fix_name":"更换车灯",
           "time":"1",
           "worker_id":"012",
-          "worker_name":"机修"
+          "worker_name":"机修",
+          "status":"已完成",
       }
   ]
   ```
@@ -229,4 +234,44 @@
   ]
   ```
 
-  
+## 报价单
+
+接口：
+
+- 获取维修委托单信息
+  `GET {baseURL}/report?fix_id={fix_id}`，数据格式：
+
+  ```json
+  {
+      "client_name": "王义炜",
+      "client_type": '个人',
+      "discount": '80',
+      "car_id": "沪A12345",
+      "priority": "普通",
+      "fix_type": "中修",
+      "pay": "现付",
+      "in_time": "2022-01-10",
+      "clerk_name": "王波",
+      "describe": "BOOM！"
+      fix:[
+      	{
+              "job_id":"012",
+              "job_name":"维修车头",
+              "time":"5",
+              "worker_id":"012",
+              "worker_name":"机修",
+      		"unit_price": 200,
+      		"subtotal": 1000 // 200*5 = 1000
+  		},
+      	{
+              "job_id":"012",
+              "job_name":"维修车屁股",
+              "time":"2",
+              "worker_id":"012",
+              "worker_name":"机修",
+      		"unit_price": 100,
+      		"subtotal": 200
+  		}
+      ]，
+  	total : 1200
+  }
