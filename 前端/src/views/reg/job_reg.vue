@@ -65,6 +65,7 @@ export default {
         time: "",
         worker_id: "待分配",
         worker_name: "",
+        status: false,
       },
       table_data: [],
       job_opts: ["维修前灯", "维修后灯", "钣金", "喷漆", "电路", "内饰修整"],
@@ -73,19 +74,19 @@ export default {
   },
   mounted() {
     this.fix_id = this.$route.query.fix_id;
-    this.table_data = api.get_job_list(this.fix_id)
-    // Axios({
-    //   url: "/job?fix_id=" + this.fix_id,
-    //   method: "get",
-    // }).then((res) => {
-    //   console.log(JSON.stringify(res.data));
-    //   this.table_data = res.data;
-    // });
+    // this.table_data = api.get_job_list(this.fix_id)
+    Axios({
+      url: "/job?fix_id=" + this.fix_id,
+      method: "get",
+    }).then((res) => {
+      console.log(JSON.stringify(res.data));
+      this.table_data = res.data;
+    });
   },
   methods: {
     bind_add() {
       this.table_data.push(this.form);
-      this.form = { job_id: "待分配", job_name: "", time: "", worker_id: "待分配", worker_name: "" };
+      this.form = { job_id: "待分配", job_name: "", time: "", worker_id: "待分配", worker_name: "", status: false };
     },
     bind_submit() {
       console.log(JSON.stringify(this.table_data));
