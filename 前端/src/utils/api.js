@@ -7,7 +7,7 @@ let api = {
       method: "get",
     });
     return res.data
-      // return [
+    // return [
     //   { car_id: "沪A12345", color: "白色", series: "桑塔纳", type: "轿车" },
     //   { car_id: "沪A23456", color: "蓝色", series: "途安", type: "SUV" },
     // ];
@@ -79,7 +79,7 @@ let api = {
         "time": "5",
         "worker_id": "012",
         "worker_name": "机修",
-        "status" : true,
+        "status": true,
       },
       {
         "job_id": "017",
@@ -87,44 +87,51 @@ let api = {
         "time": "1",
         "worker_id": "012",
         "worker_name": "机修",
-        "status" : false,
+        "status": false,
       }
     ]
   },
-  get_report(){
-    return {
-      "client_name": "王义炜",
-      "client_type": '个人',
-      "discount": '80',
-      "car_id": "沪A12345",
-      "priority": "普通",
-      "fix_type": "中修",
-      "pay": "现付",
-      "in_time": "2022-01-10",
-      "clerk_name": "王波",
-      "describe": "BOOM！",
-      fix:[
-        {
-              "job_id":"012",
-              "job_name":"维修车头",
-              "time":"5",
-              "worker_id":"012",
-              "worker_name":"机修",
-          "unit_price": 200,
-          "subtotal": 1000 // 200*5 = 1000
+  get_report() {
+    return [
+      {
+        "client_name": "王义炜",
+        "client_type": '个人',
+        "discount": '80',
+        "car_id": "沪A12345",
+        "priority": "普通",
+        "fix_type": "中修",
+        "pay": "现付",
+        "in_time": "2022-01-10",
+        "clerk_name": "王波",
+        "describe": "BOOM！",
+        "job_id": "012",
+        "job_name": "维修车头",
+        "time": "5",
+        "worker_id": "012",
+        "worker_name": "机修",
+        "unit_price": 200,
+        "subtotal": 1000 // 200*5 = 1000
       },
-        {
-              "job_id":"012",
-              "job_name":"维修车屁股",
-              "time":"2",
-              "worker_id":"012",
-              "worker_name":"机修",
-          "unit_price": 100,
-          "subtotal": 200
+      {
+        "client_name": "王义炜",
+        "client_type": '个人',
+        "discount": '80',
+        "car_id": "沪A12345",
+        "priority": "普通",
+        "fix_type": "中修",
+        "pay": "现付",
+        "in_time": "2022-01-10",
+        "clerk_name": "王波",
+        "describe": "BOOM！",
+        "job_id": "012",
+        "job_name": "维修车屁股",
+        "time": "2",
+        "worker_id": "012",
+        "worker_name": "机修",
+        "unit_price": 100,
+        "subtotal": 200
       }
-      ],
-    total : 1200
-  }
+    ]
   }
 
 };
