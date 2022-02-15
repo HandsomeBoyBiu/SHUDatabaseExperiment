@@ -63,14 +63,15 @@ export default {
     };
   },
   mounted() {
-    this.table_data = api.get_fix_list();
-    // Axios({
-    //   url: "/fix",
-    //   method: "get",
-    // }).then((res) => {
-    //   console.log(res.data);
-    //   this.table_data = res.data;
-    // });
+    // this.table_data = api.get_fix_list();
+    
+     Axios({
+       url: "/fix",
+       method: "get",
+     }).then((res) => {
+       console.log(res.data);
+       this.table_data = res.data;
+     });
   },
   methods: {
     to_job(fix_id) {

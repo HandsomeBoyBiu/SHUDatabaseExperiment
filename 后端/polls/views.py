@@ -89,11 +89,7 @@ def post_repair_order(request):
         fm = FixMan.objects.get(work_type=d['worker_name'])
         jn = ProjectTable.objects.get(project_type=d['job_name'])
         JoinTables(fix_id=para, fix_man_id=fm.fix_man_id, project_table_id=jn.project_table_id,
-<<<<<<< HEAD
-                   work_time=d['time']).save()
-=======
                    work_time=d['time'], status=d['status']).save()
->>>>>>> d8904e441b3abc59a6a01ea3c03420ba84ca0306
     response = HttpResponse()
     response.status_code = 200
     return response
@@ -107,24 +103,6 @@ def repair_order(request):
     elif request.method == 'POST':
         return post_repair_order(request)
 
-<<<<<<< HEAD
-
-# def car_post(request):
-# form = NameForm(request.POST)
-# print(form)
-# if form.is_valid():
-#     # sql语句
-#     return HttpResponse.http.OK
-
-
-# def car_get(request):
-# form = NameForm(request.GET)
-# print(form)
-# if form.is_valid():
-#     # sql语句
-#     return HttpResponse.http.OK
-=======
->>>>>>> d8904e441b3abc59a6a01ea3c03420ba84ca0306
 
 # 派工单的GET请求
 # 查询工单 GET {baseURL}/job?fix_id={fix_id}
