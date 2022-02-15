@@ -82,7 +82,7 @@
             <i class="el-icon-s-release"></i>
             维修项目
           </template>
-          <el-table :data="this.raw_data">
+          <el-table :data="this.table_data.fix">
             <el-table-column label="项目编号" prop="job_id" />
             <el-table-column label="项目名称" prop="job_name" />
             <el-table-column label="维修员编号" prop="worker_id" />
@@ -116,13 +116,11 @@ export default {
   data() {
     return {
       table_data: [],
-      raw_data: [],
     };
   },
   mounted() {
     this.fix_id = this.$route.query.fix_id;
-    this.raw_data = api.get_report();
-    this.table_data = this.raw_data[0]
+    this.table_data = api.get_report();
     // Axios({
     //   url: "/report?fix_id=" + this.fix_id,
     //   method: "get",
