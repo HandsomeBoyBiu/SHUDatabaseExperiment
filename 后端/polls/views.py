@@ -224,9 +224,16 @@ def get_report(request):
                     Clients.objects.filter(
                         client_id=list(Cars.objects.filter(car_id=fix_tabl['car_id']))[0].belonging))[
                     0].client_name
+                 # print("hhhh")
                 fix_tabl['client_type'] = list(
-                    Clients.objects.filter(client_id=list(Cars.objects.filter(car_id=a['car_id']))[0].belonging))[
+                    Clients.objects.filter(client_id=list(Cars.objects.filter(car_id=fix_tabl['car_id']))[0].belonging))[
                     0].client_type
+                # print(list(
+                #     Clients.objects.filter(client_id=list(Cars.objects.filter(car_id=a['car_id']))[0].belonging))[
+                #           0].discount)
+                fix_tabl['discount'] = list(
+                    Clients.objects.filter(client_id=list(Cars.objects.filter(car_id=fix_tabl['car_id']))[0].belonging))[
+                    0].discount
             except:
                 pass
             a = fix_tabl
