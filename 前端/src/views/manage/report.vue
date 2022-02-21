@@ -120,14 +120,14 @@ export default {
   },
   mounted() {
     this.fix_id = this.$route.query.fix_id;
-    this.table_data = api.get_report();
-    // Axios({
-    //   url: "/report?fix_id=" + this.fix_id,
-    //   method: "get",
-    // }).then((res) => {
-    //   console.log(res.data);
-    //   this.table_data = res.data;
-    // });
+    // this.table_data = api.get_report();
+    Axios({
+      url: "/getreport?fix_id=" + this.fix_id,
+      method: "get",
+    }).then((res) => {
+      console.log(res.data);
+      this.table_data = res.data;
+    });
   },
   methods: {
     to_job(fix_id) {

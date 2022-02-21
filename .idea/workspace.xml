@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="12478e0d-83d5-4cd1-a1cd-7e86eccc7a4b" name="变更" comment="get all">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/_22_1_25_13_28____.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_22_1_25_13_28_取消提交了变更_[变更]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/前端/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/前端/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/后端/polls/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/后端/polls/views.py" afterDir="false" />
-    </list>
+    <list default="true" id="12478e0d-83d5-4cd1-a1cd-7e86eccc7a4b" name="变更" comment="get_report_name_and_discount" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -115,7 +109,7 @@
       <workItem from="1643088819749" duration="1135000" />
       <workItem from="1645408949528" duration="263000" />
       <workItem from="1645410998464" duration="83000" />
-      <workItem from="1645412126081" duration="1184000" />
+      <workItem from="1645412126081" duration="1209000" />
     </task>
     <task id="LOCAL-00001" summary="get all">
       <created>1643013017030</created>
@@ -124,7 +118,14 @@
       <option name="project" value="LOCAL" />
       <updated>1643013017030</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="get_report_name_and_discount">
+      <created>1645413345229</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1645413345229</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -143,7 +144,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="get all" />
-    <option name="LAST_COMMIT_MESSAGE" value="get all" />
+    <MESSAGE value="get_report_name_and_discount" />
+    <option name="LAST_COMMIT_MESSAGE" value="get_report_name_and_discount" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/SHUDatabaseExperiment$views.coverage" NAME="views 覆盖结果" MODIFIED="1643088521968" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/后端/polls" />
