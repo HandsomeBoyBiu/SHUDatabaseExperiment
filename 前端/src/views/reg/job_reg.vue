@@ -11,7 +11,7 @@
       <el-table-column label="状态">
         <template slot-scope="scope">
           <el-checkbox v-model="scope.row.status" border>
-            {{scope.row.status ? "已完成" : "进行中"}}
+            {{ scope.row.status ? "已完成" : "进行中" }}
           </el-checkbox>
         </template>
       </el-table-column>
@@ -79,7 +79,7 @@ export default {
       url: "/job?fix_id=" + this.fix_id,
       method: "get",
     }).then((res) => {
-      console.log(JSON.stringify(res.data));
+      // console.log(JSON.stringify(res.data));
       this.table_data = res.data;
     });
   },
@@ -96,6 +96,17 @@ export default {
         data: this.table_data,
       }).then((res) => {
         console.log(res);
+        this.$message({
+          message: "派工单登记成功",
+          type: "success",
+        });
+        Axios({
+          url: "/job?fix_id=" + this.fix_id,
+          method: "get",
+        }).then((res) => {
+          // console.log(JSON.stringify(res.data));
+          this.table_data = res.data;
+        });
       });
     },
     deleteRow(index) {

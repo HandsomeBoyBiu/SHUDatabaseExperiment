@@ -79,7 +79,7 @@
 
         <el-descriptions-item :span="3">
           <template slot="label">
-            <i class="el-icon-s-release"></i>
+            <i class="el-icon-s-order"></i>
             维修项目
           </template>
           <el-table :data="this.table_data.fix">

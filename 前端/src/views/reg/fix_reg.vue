@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import Axios from 'axios'
+import Axios from "axios";
 export default {
   data() {
     return {
@@ -73,7 +73,7 @@ export default {
     }).then((res) => {
       this.car_list = res.data;
     });
-    console.log(this.car_list)
+    console.log(this.car_list);
   },
   methods: {
     bind_submit() {
@@ -83,6 +83,21 @@ export default {
         data: this.form,
       }).then((res) => {
         console.log(res);
+        this.$message({
+          message: "维修委托登记成功",
+          type: "success",
+        });
+        this.form = {
+          car_id: "",
+          priority: "普通",
+          type: "",
+          pay: "",
+          in_time: "",
+          clerk_name: "",
+          clerk_id: "",
+          est_time: "",
+          describe: "",
+        };
       });
     },
   },
