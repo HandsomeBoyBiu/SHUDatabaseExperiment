@@ -153,18 +153,25 @@ def get_client(request):
                                      named=True)
     clients = Clients.objects.all()
     clients.query = pickle.loads(pickle.dumps(qs.query))
+
+    # for custom in clients:
+    #     car = Cars.objects.get(belonging=custom['client_name'])
+    #     custom['cars'] = [{
+    #         "id": car.car_id,
+    #         "color": car.car_color,
+    #         "type": car.car_type
+    #     }]
+    for custom in clients:
+        cars = Cars.objects.filter(belonging=custom['client_name'])
+        for car in cars:
+            custom['cars'] = [{
+                "id": car.car_id,
+                "color": car.car_color,
+                "type": car.car_type
+            }]
+
     ls = list(clients)
     print(ls)
-    # custom = clients[0]
-    for custom in clients:
-        qs1 = Cars.objects.filter(belonging=custom['client_id']).values_list('car_id', "car_color", "car_series",
-                                                                             "car_type")
-        custom['cars'] = car_exchange(qs1, custom['client_id'])
-    # cars = Cars.objects.filter(belonging=1)
-    # cars.query = pickle.loads((pickle.dumps(qs1.query)))
-    # print(list(cars))
-    # data = serializers.serialize("json", client)
-    # print(clients)
     return HttpResponse(json.dumps(ls, ensure_ascii=False))
 
 
