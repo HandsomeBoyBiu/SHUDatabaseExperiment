@@ -128,11 +128,6 @@ export default {
       console.log(res.data);
       this.table_data = res.data;
     });
-    this.table_data.total = 0;
-    for (let i of this.table_data.fix) {
-      console.log(i.subtotal);
-      this.table_data.total += i.subtotal;
-    }
     console.log(this.table_data.total);
   },
   methods: {

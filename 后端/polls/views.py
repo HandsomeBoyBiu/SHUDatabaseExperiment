@@ -211,74 +211,46 @@ def get_fix(request):
 def get_report(request):
     print('### [Request GET] get_report ###')
     fix_id = request.GET.get('fix_id')
-    qs = FixTables.objects.values_list("fix_id", "car_id", "priority", "fix_type", "pay", "in_time",
-                                       "clerk_name", "clerk_id", "est_time", "describe", named=True)
-    fix_tables = FixTables.objects.all()
-    fix_tables.query = pickle.loads(pickle.dumps(qs.query))
-    ls = list(fix_tables)
-    lis = []
-    for fix_tabl in ls:
-        if fix_tabl['fix_id'] == int(fix_id):
-            try:
-                fix_tabl['client_name'] = list(
-                    Clients.objects.filter(
-                        client_id=list(Cars.objects.filter(car_id=fix_tabl['car_id']))[0].belonging))[
-                    0].client_name
-                 # print("hhhh")
-                fix_tabl['client_type'] = list(
-                    Clients.objects.filter(client_id=list(Cars.objects.filter(car_id=fix_tabl['car_id']))[0].belonging))[
-                    0].client_type
-                # print(list(
-                #     Clients.objects.filter(client_id=list(Cars.objects.filter(car_id=a['car_id']))[0].belonging))[
-                #           0].discount)
-                fix_tabl['discount'] = list(
-                    Clients.objects.filter(client_id=list(Cars.objects.filter(car_id=fix_tabl['car_id']))[0].belonging))[
-                    0].discount
-            except:
-                pass
-            a = fix_tabl
-            # lis.append(fix_tabl)
+    fix_table = FixTables.objects.get(fix_id=fix_id)
+    car = Cars.objects.get(car_id=fix_table.car_id)
+    client = Clients.objects.get(client_name=car.belonging)
+    ret = {
+        "client_name": client.client_name,
+        "client_type": client.client_type,
+        "discount": client.discount,
+        "car_id": car.car_id,
+        "priority": fix_table.priority,
+        "fix_type": fix_table.fix_type,
+        "pay": fix_table.pay,
+        "in_time": fix_table.in_time,
+        "clerk_name": fix_table.clerk_name,
+        "describe": fix_table.describe
+    }
 
-        else:
-            continue
-    jontalbes = JoinTables.objects.filter(fix_id=fix_id)
-    lss = list(jontalbes)
-    length = len(lss)
-    i = 0
-    abc = []
-    for fix_table in lss:
-        try:
-            js = {'job_id': list(JoinTables.objects.filter(fix_id=a['fix_id']))[i].project_table_id,
-                  'job_name': list(ProjectTable.objects.filter(
-                      project_table_id=list(JoinTables.objects.filter(fix_id=a['fix_id']))[i].project_table_id))[
-                      0].project_type,
-                  'worker_id': list(JoinTables.objects.filter(fix_id=a['fix_id']))[i].fix_man_id,
-                  'time': list(JoinTables.objects.filter(fix_id=a['fix_id']))[i].work_time,
-                  'unit_price': list(FixMan.objects.filter(
-                      fix_man_id=list(JoinTables.objects.filter(fix_id=a['fix_id']))[i].fix_man_id))[0].unit_price,
-                  'subtotal': list(FixMan.objects.filter(
-                      fix_man_id=list(JoinTables.objects.filter(fix_id=a['fix_id']))[i].fix_man_id))[0].unit_price *
-                              list(JoinTables.objects.filter(fix_id=a['fix_id']))[i].work_time,
-                  'worker_name': list(FixMan.objects.filter(
-                      fix_man_id=list(JoinTables.objects.filter(fix_id=a['fix_id']))[i].fix_man_id))[0].work_type
-                  }
-            i = i + 1
-        except:
-            # fix_table['client_id'] = []
-            # fix_table['discount'] = []
-            # fix_table['worker_id'] = []
-            # fix_table['time'] = []
-            # fix_table['unit_price'] = []
-            # fix_table['subtotal'] = []
-            js = {}
-        abc.append(js)
-    a['fix'] = abc
+    jointables = JoinTables.objects.filter(fix_id=fix_id)
+    fixLs = []
+    for i in jointables:
+        job = ProjectTable.objects.get(project_table_id=i.project_table_id)
+        worker = FixMan.objects.get(fix_man_id=i.fix_man_id)
+        fixLs.append({
+            "job_id": i.project_table_id,
+            "job_name": job.project_type,
+            "time": i.work_time,
+            "worker_id": i.fix_man_id,
+            "worker_name": worker.work_type,
+            "unit_price": worker.unit_price,
+            "subtotal": worker.unit_price * i.work_time
+        })
+    ret['fix'] = fixLs
+    ret['total'] = 0
+    for i in fixLs:
+        ret['total'] += i['subtotal']
 
     # zidian = {'fix': abc}
     # lis.append(zidian)
     # prin(ls)
     # print(list(FixMan.object.filter(fix_man_id=fix_table['fix_man_id']))[0].unit_price)
-    return HttpResponse(json.dumps(a, ensure_ascii=False, cls=ComplexEncoder))
+    return HttpResponse(json.dumps(ret, ensure_ascii=False, cls=ComplexEncoder))
 
 
 class ComplexEncoder(json.JSONEncoder):
